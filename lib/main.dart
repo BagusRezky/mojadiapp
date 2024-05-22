@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mojadiapp/screens/login.dart';
+import 'package:mojadiapp/screens/auth/login.dart';
 
 void main() {
   runApp(const MainApp());
@@ -13,6 +13,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
+      minTextAdapt: true,
+      splitScreenMode: true,
       builder: (context, child) => const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: LoginScreen(),
