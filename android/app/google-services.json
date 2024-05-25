@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "569640058105",
+    "project_id": "mojadiapp",
+    "storage_bucket": "mojadiapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:569640058105:android:4b792624f4a528a8ddf628",
+        "android_client_info": {
+          "package_name": "com.example.mojadiapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYuE6D8KCC5wgWvfh2whuxJfySJ04pSdA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

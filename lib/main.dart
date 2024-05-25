@@ -1,8 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mojadiapp/providers/auth_provider.dart';
 import 'package:mojadiapp/screens/auth/login.dart';
+import 'package:provider/provider.dart';
+import 'services/firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MainApp());
 }
 
@@ -15,9 +23,14 @@ class MainApp extends StatelessWidget {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) => const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: LoginScreen(),
+      builder: (context, child) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ],
+        child: const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: LoginScreen(),
+        ),
       ),
     );
   }
