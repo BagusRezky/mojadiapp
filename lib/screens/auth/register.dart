@@ -12,8 +12,8 @@ class Register extends StatelessWidget {
           children: [
             Image(
               image: const AssetImage('assets/logo.png'),
-              width: 350.w,
-              height: 350.h,
+              width: 200.w,
+              height: 200.h,
             ),
             Container(
               width: 300.w,

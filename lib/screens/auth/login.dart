@@ -11,8 +11,10 @@ class LoginScreen extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            const Image(
-              image: AssetImage('assets/logo.png'),
+            Image(
+              image: const AssetImage('assets/logo.png'),
+              width: 200.w,
+              height: 200.h,
             ),
             Container(
               width: 300.w,
