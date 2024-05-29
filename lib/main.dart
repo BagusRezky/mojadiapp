@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mojadiapp/providers/auth_provider.dart';
 import 'package:mojadiapp/screens/auth/login.dart';
-import 'package:mojadiapp/screens/laporan/semua_laporan.dart';
+import 'package:mojadiapp/screens/home.dart';
+import 'package:mojadiapp/screens/laporan/create_report.dart';
+import 'package:mojadiapp/screens/laporan/getall_report.dart';
 import 'package:provider/provider.dart';
 import 'services/firebase_options.dart';
 
@@ -31,7 +33,7 @@ class MainApp extends StatelessWidget {
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,
           // home: LoginScreen(),
-          home: LaporanScreen(),
+          home: HomeScreen(),
         ),
       ),
     );

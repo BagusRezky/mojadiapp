@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mojadiapp/screens/laporan/create_report.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -41,19 +42,29 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontSize: 20.sp,
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20.h),
-                      width: 150.w,
-                      height: 30.h,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(2.h),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Laporkan Sekarang',
-                          style: TextStyle(
-                            color: Colors.white,
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CreateReportScreen(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(top: 20.h),
+                        width: 150.w,
+                        height: 30.h,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(2.h),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Laporkan Sekarang',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
