@@ -21,8 +21,8 @@ class AuthProvider extends ChangeNotifier {
         await fireAuth.createUserWithEmailAndPassword(
             email: email, password: password);
       }
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()));
+      // Navigator.of(context).pushReplacement(
+      //     MaterialPageRoute(builder: (context) => const HomeScreen()));
     } catch (e) {
       if (e is FirebaseAuthException) {
         final snackBar =
