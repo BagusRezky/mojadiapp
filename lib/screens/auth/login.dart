@@ -43,8 +43,9 @@ class LoginScreen extends StatelessWidget {
                 Provider.of<AuthProvider>(context, listen: false).signIn(
                   emailController.text,
                   passwordController.text,
+                  context,
                 );
-                // Navigator.pushNamed(context, '/home');
+                
               },
               child: Container(
                 width: 300.w,

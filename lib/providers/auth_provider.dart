@@ -33,6 +33,7 @@
 //     notifyListeners();
 //   }
 // }
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mojadiapp/models/users_model.dart';
 import 'package:mojadiapp/services/firebase_auth_service.dart';
@@ -43,15 +44,38 @@ class AuthProvider with ChangeNotifier {
 
   AppUser? get user => _user;
 
-  Future<void> signIn(String email, String password) async {
-    _user = await _authService.signInWithEmail(email, password);
-    notifyListeners();
+  Future<void> signIn(
+      String email, String password, BuildContext context) async {
+    try {
+      _user = await _authService.signInWithEmail(email, password);
+      notifyListeners();
+      if (_user != null) {
+        Navigator.pushNamed(context, '/home');
+      } else {
+        throw FirebaseAuthException(
+            message: 'Failed to sign in', code: 'user-not-found');
+      }
+    } catch (e) {
+      final snackBar = SnackBar(content: Text(e.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
-  Future<void> register(
-      String email, String password, String birthDate, String address) async {
-    _user = await _authService.registerWithEmail(
-        email, password, birthDate, address);
-    notifyListeners();
+  Future<void> register(String email, String password, String birthDate,
+      String address, BuildContext context) async {
+    try {
+      _user = await _authService.registerWithEmail(
+          email, password, birthDate, address);
+      notifyListeners();
+      if (_user != null) {
+        Navigator.pushNamed(context, '/');
+      } else {
+        throw FirebaseAuthException(
+            message: 'Failed to register', code: 'registration-failed');
+      }
+    } catch (e) {
+      final snackBar = SnackBar(content: Text(e.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 }

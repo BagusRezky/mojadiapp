@@ -49,6 +49,7 @@ class Register extends StatelessWidget {
                     passwordController.text,
                     birthDateController.text,
                     addressController.text,
+                    context,
                   );
                 },
                 child: const Text('Register'),
