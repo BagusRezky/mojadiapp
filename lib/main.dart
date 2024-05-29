@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mojadiapp/Routes/route.dart';
 import 'package:mojadiapp/providers/auth_provider.dart';
-import 'package:mojadiapp/screens/laporan/semua_laporan.dart';
 import 'package:provider/provider.dart';
 import 'services/firebase_options.dart';
 
@@ -28,7 +27,7 @@ class MainApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (_) => AuthProvider()),
         ],
-        child: MaterialApp(
+        child: const MaterialApp(
           debugShowCheckedModeBanner: false,
           onGenerateRoute: Routes.generateRoute, // Gunakan onGenerateRoute
           initialRoute: '/',

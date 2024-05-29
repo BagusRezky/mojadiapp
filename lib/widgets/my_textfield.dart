@@ -7,7 +7,7 @@ class TextInputField extends StatelessWidget {
   final String labelText;
   final int minLines;
   final int maxLines;
-
+  final bool obscure;
   final TextEditingController controller;
 
   const TextInputField({
@@ -17,6 +17,7 @@ class TextInputField extends StatelessWidget {
     required this.minLines,
     required this.maxLines,
     required this.controller,
+    this.obscure = false,
   });
 
   @override
@@ -59,6 +60,8 @@ class TextInputField extends StatelessWidget {
       ),
       minLines: minLines,
       maxLines: maxLines,
+      obscureText: obscure,
+      controller: controller,
     );
   }
 }

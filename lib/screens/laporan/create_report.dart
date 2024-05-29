@@ -108,6 +108,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                       controller: _judulController,
                       minLines: 1,
                       maxLines: 1,
+                      obscure: false,
                     ),
                     12.verticalSpace,
                     TextInputField(
@@ -116,6 +117,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                       controller: _deskripsiController,
                       minLines: 3,
                       maxLines: 5,
+                      obscure: false,
                     ),
                     12.verticalSpace,
                     TextField(

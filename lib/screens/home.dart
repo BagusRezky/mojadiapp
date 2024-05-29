@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mojadiapp/screens/laporan/create_report.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -44,12 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CreateReportScreen(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/report/create');
                       },
                       child: Container(
                         margin: EdgeInsets.only(top: 20.h),
@@ -80,15 +74,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Column(
                       children: [
-                        Container(
-                          width: 50.w,
-                          height: 50.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50.w),
-                            border: Border.all(color: Colors.black),
-                          ),
-                          child: const Center(
-                            child: Icon(Icons.add_alert),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/report');
+                          },
+                          child: Container(
+                            width: 50.w,
+                            height: 50.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50.w),
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: const Center(
+                              child: Icon(Icons.add_alert),
+                            ),
                           ),
                         ),
                         10.verticalSpace,
