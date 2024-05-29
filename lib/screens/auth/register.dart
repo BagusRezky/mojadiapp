@@ -9,54 +9,61 @@ class Register extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-    final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
+    final TextEditingController birthDateController = TextEditingController();
+    final TextEditingController addressController = TextEditingController();
 
     return Scaffold(
       body: Center(
-        child: Form(
-          key: registerFormKey, // Use a unique GlobalKey for this form
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Image.asset('assets/logo.png', width: 200.w, height: 200.h),
-                buildTextField(
-                    'Email', emailController, 'Please enter a valid email'),
-                SizedBox(height: 10.h),
-                buildTextField('Password', passwordController,
-                    'Password must be at least 6 characters',
-                    obscureText: true),
-                SizedBox(height: 20.h),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    textStyle: const TextStyle(color: Colors.white),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Image.asset('assets/logo.png', width: 200.w, height: 200.h),
+              buildTextField(
+                  'Email', emailController, 
+                  // 'Please enter a valid email'
                   ),
-                  onPressed: () {
-                    if (registerFormKey.currentState!.validate()) {
-                      authProvider.submit(context, emailController.text,
-                          passwordController.text, false);
-                    }
-                  },
-                  child: const Text('Register'),
+              10.verticalSpace,
+              buildTextField('Password', passwordController,
+                  // 'Password must be at least 6 characters',
+                  obscureText: true),
+             10.verticalSpace,
+             buildTextField(
+                'Tanggal lahir', birthDateController,
+                // 'Please enter a valid email'
+              ),
+              10.verticalSpace,
+              buildTextField(
+                'Alamat', addressController,
+                // 'Please enter a valid email'
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  textStyle: const TextStyle(color: Colors.white),
                 ),
-                SizedBox(height: 10.h),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()));
-                  },
-                  child: const Text(
-                    'Sudah punya akun? Login',
-                    style: TextStyle(color: Colors.blue),
-                  ),
+                onPressed: () {
+                  Provider.of<AuthProvider>(context, listen: false).register(
+                    emailController.text,
+                    passwordController.text,
+                    birthDateController.text,
+                    addressController.text,
+                  );
+                },
+                child: const Text('Register'),
+              ),
+              SizedBox(height: 10.h),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/');
+                },
+                child: const Text(
+                  'Sudah punya akun? Login',
+                  style: TextStyle(color: Colors.blue),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -64,7 +71,8 @@ class Register extends StatelessWidget {
   }
 
   Widget buildTextField(
-      String hint, TextEditingController controller, String? validatorMsg,
+      String hint, TextEditingController controller, 
+      // String? validatorMsg,
       {bool obscureText = false}) {
     return Container(
       width: 300.w,
@@ -82,8 +90,8 @@ class Register extends StatelessWidget {
           hintText: hint,
         ),
         obscureText: obscureText,
-        validator: (value) =>
-            value == null || value.isEmpty ? validatorMsg : null,
+        // validator: (value) =>
+        //     value == null || value.isEmpty ? validatorMsg : null,
       ),
     );
   }
