@@ -41,19 +41,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontSize: 20.sp,
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20.h),
-                      width: 150.w,
-                      height: 30.h,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(2.h),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Laporkan Sekarang',
-                          style: TextStyle(
-                            color: Colors.white,
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/report/create');
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(top: 20.h),
+                        width: 150.w,
+                        height: 30.h,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(2.h),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Laporkan Sekarang',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -69,15 +74,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Column(
                       children: [
-                        Container(
-                          width: 50.w,
-                          height: 50.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50.w),
-                            border: Border.all(color: Colors.black),
-                          ),
-                          child: const Center(
-                            child: Icon(Icons.add_alert),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/report');
+                          },
+                          child: Container(
+                            width: 50.w,
+                            height: 50.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50.w),
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: const Center(
+                              child: Icon(Icons.add_alert),
+                            ),
                           ),
                         ),
                         10.verticalSpace,

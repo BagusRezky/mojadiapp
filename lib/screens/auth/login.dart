@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mojadiapp/providers/auth_provider.dart';
+import 'package:mojadiapp/widgets/my_button.dart';
+import 'package:mojadiapp/widgets/my_textfield.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -13,72 +16,66 @@ class LoginScreen extends StatelessWidget {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            Image(
-              image: const AssetImage('assets/logo.png'),
-              width: 200.w,
-              height: 200.h,
-            ),
-            TextFormField(
-              controller: emailController,
-              decoration: const InputDecoration(hintText: 'Email'),
-              // onSaved: (value) => authProvider.enteredEmail = value ?? '',
-              // validator: (value) =>
-              //     value!.isEmpty ? 'Please enter an email' : null,
-            ),
-            10.verticalSpace,
-            TextFormField(
-              controller: passwordController,
-              decoration: const InputDecoration(hintText: 'Password'),
-              obscureText: true,
-              // onSaved: (value) => authProvider.enteredPassword = value ?? '',
-              // validator: (value) =>
-              //     value!.isEmpty ? 'Please enter a password' : null,
-            ),
-            20.verticalSpace,
-            GestureDetector(
-              onTap: () {
-                Provider.of<AuthProvider>(context, listen: false).signIn(
-                  emailController.text,
-                  passwordController.text,
-                  context,
-                );
-                
-              },
-              child: Container(
-                width: 300.w,
-                height: 30.h,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(20),
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding:
+              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 100.0),
+          child: Column(
+            children: [
+              Image(
+                image: const AssetImage('assets/logo.png'),
+                width: 257.w,
+                height: 262.h,
+              ),
+              20.verticalSpace,
+              TextInputField(
+                hintText: 'Email',
+                labelText: 'Email',
+                minLines: 1,
+                maxLines: 1,
+                controller: emailController,
+                obscure: false,
+              ),
+              15.verticalSpace,
+              TextInputField(
+                hintText: 'Password',
+                labelText: 'Password',
+                minLines: 1,
+                maxLines: 1,
+                controller: passwordController,
+                obscure: true,
+              ),
+              20.verticalSpace,
+              GestureDetector(
+                onTap: () {
+                  Provider.of<AuthProvider>(context, listen: false).signIn(
+                    emailController.text,
+                    passwordController.text,
+                    context,
+                  );
+                },
+                child: const MyButton(
+                  text: 'Login',
                 ),
-                child: const Center(
+              ),
+              10.verticalSpace,
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/register');
+                },
+                child: SizedBox(
                   child: Text(
-                    'Login',
-                    style: TextStyle(
-                      color: Colors.white,
+                    'Register',
+                    style: GoogleFonts.roboto(
+                      color: const Color(0xFF1564C0),
+                      fontSize: 16,
                     ),
                   ),
                 ),
               ),
-            ),
-            10.verticalSpace,
-            GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, '/register');
-              },
-              child: const SizedBox(
-                child: Text(
-                  'Register',
-                  style: TextStyle(
-                    color: Colors.blue,
-                  ),
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
