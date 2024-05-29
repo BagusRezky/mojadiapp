@@ -77,7 +77,7 @@ class LoginScreen extends StatelessWidget {
                 },
                 child: const SizedBox(
                   child: Text(
-                    'Forgot Password?',
+                    'Register',
                     style: TextStyle(
                       color: Colors.blue,
                     ),
