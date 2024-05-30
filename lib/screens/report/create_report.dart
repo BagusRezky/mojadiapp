@@ -1,5 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mojadiapp/models/report_model.dart';
+import 'package:mojadiapp/services/firebase_report_service.dart';
 import 'package:mojadiapp/widgets/my_button.dart';
 import 'package:mojadiapp/widgets/my_textfield.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,22 +25,14 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
   final TextEditingController _deskripsiController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _kategoryController = TextEditingController();
-
-  // Image picker variables
   File? _image;
   final ImagePicker _picker = ImagePicker();
 
-  // variable menyimpan kategory
   final List<String> categories = [
     'Pelanggaran Lingkungan',
     'Kerusakan Fasilitas Sosial',
     'Kerusakan Jalan',
     'Kerusakan Drainase',
-    'Kerusakan Taman',
-    'Kerusakan Tempat Sampah',
-    'Kerusakan Tempat Ibadah',
-    'Kerusakan Tempat Pendidikan',
-    'Kerusakan Tempat Umum',
   ];
 
   Future<void> _pickImage(ImageSource source) async {
@@ -43,6 +41,77 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
       setState(() {
         _image = File(pickedFile.path);
       });
+    }
+  }
+
+  Future<void> _selectedDate() async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      setState(() {
+        _dateController.text = picked.toString().split(" ")[0];
+      });
+    }
+  }
+
+  Future<void> _uploadData() async {
+    if (_image == null ||
+        _judulController.text.isEmpty ||
+        _deskripsiController.text.isEmpty ||
+        _dateController.text.isEmpty ||
+        _kategoryController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Semua field harus diisi'),
+        ),
+      );
+      return;
+    }
+
+    try {
+      String imageUrl = await FirebaseReportService().uploadImage(_image!);
+      final user = FirebaseAuth.instance.currentUser;
+      String userEmail = user!.email!;
+
+      Report report = Report(
+        id: '',
+        judul: _judulController.text,
+        deskripsi: _deskripsiController.text,
+        tanggal: _dateController.text,
+        kategori: _kategoryController.text,
+        imageUrl: imageUrl,
+        userEmail: userEmail,
+        timestamp: Timestamp.now(),
+      );
+
+      await FirebaseReportService().createReport(report);
+
+      setState(() {
+        _image = null;
+        _judulController.clear();
+        _deskripsiController.clear();
+        _dateController.clear();
+        _kategoryController.clear();
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Laporan berhasil dibuat'),
+        ),
+      );
+
+      // Navigate back to home screen
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Gagal membuat laporan: $e'),
+        ),
+      );
     }
   }
 
@@ -210,7 +279,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                       },
                     ),
                     20.verticalSpace,
-                    const MyButton(text: 'Buat Laporan'),
+                    MyButton(text: 'Buat Laporan', onPressed: _uploadData),
                   ],
                 ),
               ),
@@ -219,19 +288,5 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _selectedDate() async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2015, 8),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null) {
-      setState(() {
-        _dateController.text = picked.toString().split(" ")[0];
-      });
-    }
   }
 }

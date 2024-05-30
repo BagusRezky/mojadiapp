@@ -47,17 +47,15 @@ class LoginScreen extends StatelessWidget {
                 obscure: true,
               ),
               20.verticalSpace,
-              GestureDetector(
-                onTap: () {
+              MyButton(
+                text: 'Login',
+                onPressed: () {
                   Provider.of<AuthProvider>(context, listen: false).signIn(
                     emailController.text,
                     passwordController.text,
                     context,
                   );
                 },
-                child: const MyButton(
-                  text: 'Login',
-                ),
               ),
               10.verticalSpace,
               GestureDetector(
