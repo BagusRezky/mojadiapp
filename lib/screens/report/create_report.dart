@@ -24,6 +24,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
   final TextEditingController _judulController = TextEditingController();
   final TextEditingController _deskripsiController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _lokasiController = TextEditingController();
   final TextEditingController _kategoryController = TextEditingController();
   File? _image;
   final ImagePicker _picker = ImagePicker();
@@ -63,6 +64,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
         _judulController.text.isEmpty ||
         _deskripsiController.text.isEmpty ||
         _dateController.text.isEmpty ||
+        _lokasiController.text.isEmpty ||
         _kategoryController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -82,9 +84,11 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
         judul: _judulController.text,
         deskripsi: _deskripsiController.text,
         tanggal: _dateController.text,
+        lokasi: _lokasiController.text,
         kategori: _kategoryController.text,
         imageUrl: imageUrl,
         userEmail: userEmail,
+        status: 'pending',
         timestamp: Timestamp.now(),
       );
 
@@ -95,6 +99,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
         _judulController.clear();
         _deskripsiController.clear();
         _dateController.clear();
+        _lokasiController.clear();
         _kategoryController.clear();
       });
 
@@ -231,6 +236,14 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                       onTap: () {
                         _selectedDate();
                       },
+                    ),
+                    12.verticalSpace,
+                    TextInputField(
+                      hintText: 'Masukkan Lokasi Laporan',
+                      labelText: 'Lokasi',
+                      controller: _lokasiController,
+                      minLines: 1,
+                      maxLines: 1,
                     ),
                     12.verticalSpace,
                     DropdownButtonFormField<String>(

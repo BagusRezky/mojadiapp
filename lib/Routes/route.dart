@@ -15,7 +15,7 @@ class Routes {
       case '/register':
         return MaterialPageRoute(builder: (_) => const Register());
       case '/report':
-        return MaterialPageRoute(builder: (_) => const LaporanScreen());
+        return MaterialPageRoute(builder: (_) => const ListReportScreen());
       case '/report/create':
         return MaterialPageRoute(builder: (_) => const CreateReportScreen());
       default:
