@@ -27,6 +27,10 @@ class FirebaseReportService {
         .toList();
   }
 
+  Future<void> updateReport(Report report) async {
+    await _db.collection('reports').doc(report.id).update(report.toMap());
+  }
+
   Future<void> updateReportStatus(String reportId, String newStatus) async {
     await _db.collection('reports').doc(reportId).update({'status': newStatus});
   }

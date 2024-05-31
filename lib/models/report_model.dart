@@ -21,7 +21,7 @@ class Report {
     required this.kategori,
     required this.imageUrl,
     required this.userEmail,
-    this.status = 'pending',
+    this.status = 'Belum Selesai',
     required this.timestamp,
   });
 
@@ -51,7 +51,7 @@ class Report {
       kategori: map['kategori'] ?? '',
       imageUrl: map['image_url'] ?? '',
       userEmail: map['user_email'] ?? '',
-      status: map['status'] ?? 'pending',
+      status: map['status'] ?? 'Belum Selesai',
       timestamp: map['timestamp'] ?? Timestamp.now(),
     );
   }
