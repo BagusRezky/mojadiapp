@@ -1,4 +1,3 @@
-// models/report_model.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Report {
@@ -6,9 +5,11 @@ class Report {
   String judul;
   String deskripsi;
   String tanggal;
+  String lokasi;
   String kategori;
   String imageUrl;
   String userEmail;
+  String status;
   Timestamp timestamp;
 
   Report({
@@ -16,9 +17,11 @@ class Report {
     required this.judul,
     required this.deskripsi,
     required this.tanggal,
+    required this.lokasi,
     required this.kategori,
     required this.imageUrl,
     required this.userEmail,
+    this.status = 'Belum Selesai',
     required this.timestamp,
   });
 
@@ -28,9 +31,11 @@ class Report {
       'judul': judul,
       'deskripsi': deskripsi,
       'tanggal': tanggal,
+      'lokasi': lokasi,
       'kategori': kategori,
       'image_url': imageUrl,
       'user_email': userEmail,
+      'status': status,
       'timestamp': timestamp,
     };
   }
@@ -39,13 +44,15 @@ class Report {
   factory Report.fromMap(Map<String, dynamic> map, String documentId) {
     return Report(
       id: documentId,
-      judul: map['judul'],
-      deskripsi: map['deskripsi'],
-      tanggal: map['tanggal'],
-      kategori: map['kategori'],
-      imageUrl: map['image_url'],
-      userEmail: map['user_email'],
-      timestamp: map['timestamp'],
+      judul: map['judul'] ?? '',
+      deskripsi: map['deskripsi'] ?? '',
+      tanggal: map['tanggal'] ?? '',
+      lokasi: map['lokasi'] ?? '',
+      kategori: map['kategori'] ?? '',
+      imageUrl: map['image_url'] ?? '',
+      userEmail: map['user_email'] ?? '',
+      status: map['status'] ?? 'Belum Selesai',
+      timestamp: map['timestamp'] ?? Timestamp.now(),
     );
   }
 }

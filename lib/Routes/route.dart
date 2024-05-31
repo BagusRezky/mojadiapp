@@ -3,7 +3,7 @@ import 'package:mojadiapp/screens/auth/login.dart';
 import 'package:mojadiapp/screens/auth/register.dart';
 import 'package:mojadiapp/screens/home.dart';
 import 'package:mojadiapp/screens/report/create_report.dart';
-import 'package:mojadiapp/screens/report/getall_report.dart';
+import 'package:mojadiapp/screens/report/list_report.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -15,7 +15,7 @@ class Routes {
       case '/register':
         return MaterialPageRoute(builder: (_) => const Register());
       case '/report':
-        return MaterialPageRoute(builder: (_) => const LaporanScreen());
+        return MaterialPageRoute(builder: (_) => const ListReportScreen());
       case '/report/create':
         return MaterialPageRoute(builder: (_) => const CreateReportScreen());
       default:

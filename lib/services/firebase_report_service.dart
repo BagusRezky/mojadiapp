@@ -26,4 +26,16 @@ class FirebaseReportService {
             (doc) => Report.fromMap(doc.data() as Map<String, dynamic>, doc.id))
         .toList();
   }
+
+  Future<void> updateReport(Report report) async {
+    await _db.collection('reports').doc(report.id).update(report.toMap());
+  }
+
+  Future<void> updateReportStatus(String reportId, String newStatus) async {
+    await _db.collection('reports').doc(reportId).update({'status': newStatus});
+  }
+
+  Future<void> deleteReport(String reportId) async {
+    await _db.collection('reports').doc(reportId).delete();
+  }
 }
