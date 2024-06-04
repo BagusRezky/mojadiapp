@@ -20,7 +20,10 @@ class FirebaseReportService {
 
   // Fetch all reports
   Future<List<Report>> fetchReports() async {
-    QuerySnapshot snapshot = await _db.collection('reports').get();
+    QuerySnapshot snapshot = await _db
+        .collection('reports')
+        .orderBy('timestamp', descending: true)
+        .get();
     return snapshot.docs
         .map(
             (doc) => Report.fromMap(doc.data() as Map<String, dynamic>, doc.id))
@@ -37,5 +40,17 @@ class FirebaseReportService {
 
   Future<void> deleteReport(String reportId) async {
     await _db.collection('reports').doc(reportId).delete();
+  }
+
+  Future<List<Report>> fetchUserReports(String userEmail) async {
+    QuerySnapshot snapshot = await _db
+        .collection('reports')
+        .where('user_email', isEqualTo: userEmail)
+        .orderBy('timestamp', descending: true)
+        .get();
+    return snapshot.docs
+        .map(
+            (doc) => Report.fromMap(doc.data() as Map<String, dynamic>, doc.id))
+        .toList();
   }
 }

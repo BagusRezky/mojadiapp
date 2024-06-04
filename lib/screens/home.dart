@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:mojadiapp/screens/report/detail_report.dart';
+import 'package:mojadiapp/widgets/my_menu.dart';
+import 'package:mojadiapp/services/firebase_report_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mojadiapp/models/report_model.dart';
+import 'package:mojadiapp/widgets/my_report_card.dart';
+import 'package:mojadiapp/widgets/my_report_item.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,6 +19,23 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
+  late Future<List<Report>> _userReportsFuture;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _userReportsFuture = _fetchUserReports();
+  }
+
+  Future<List<Report>> _fetchUserReports() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      return await FirebaseReportService().fetchUserReports(user.email!);
+    } else {
+      return [];
+    }
+  }
 
   void onItemTapped(int index) {
     setState(() {
@@ -20,156 +46,114 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 300.w,
-                height: 200.h,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                ),
-                padding: EdgeInsets.all(10.w),
-                margin: EdgeInsets.only(top: 40.h),
-                child: Column(
-                  children: [
-                    Text(
-                      'Yuk, laporkan temuaan pelanggaran & kerusakan fasilitas sosial di Lingkungan Sekitarmu!',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20.sp,
-                      ),
+              Row(
+                children: [
+                  Text(
+                    'Adukan Sekarang!',
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 20.sp,
                     ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/report/create');
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(top: 20.h),
-                        width: 150.w,
-                        height: 30.h,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(2.h),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Laporkan Sekarang',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                ],
+              ),
+              10.verticalSpace,
+              ReportCard(context: context),
+              20.verticalSpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  MyMenu(
+                    title: 'Laporan',
+                    boxColor: Colors.blue.withOpacity(0.1),
+                    iconColor: const Color(0xFF103374),
+                    icon: Icons.add_alert,
+                    onTap: () {
+                      Navigator.pushNamed(context, '/report');
+                    },
+                  ),
+                  MyMenu(
+                    title: 'Statistik',
+                    boxColor: Colors.red.withOpacity(0.1),
+                    iconColor: const Color(0xFFFF3B30),
+                    icon: Icons.bar_chart,
+                    onTap: () {
+                      Navigator.pushNamed(context, '/report');
+                    },
+                  ),
+                  MyMenu(
+                    title: 'Artikel',
+                    boxColor: Colors.green.withOpacity(0.1),
+                    iconColor: const Color(0xFF259F46),
+                    icon: Icons.article,
+                    onTap: () {
+                      Navigator.pushNamed(context, '/report');
+                    },
+                  ),
+                  MyMenu(
+                    title: 'Informasi',
+                    boxColor: const Color(0xFFF64A4A).withOpacity(0.1),
+                    iconColor: const Color(0xFFF64A4A),
+                    icon: Icons.info,
+                    onTap: () {
+                      Navigator.pushNamed(context, '/report');
+                    },
+                  ),
+                ],
               ),
               20.verticalSpace,
-              Container(
-                padding: EdgeInsets.all(25.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        InkWell(
+              Text(
+                'Laporanmu!',
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 20.sp,
+                ),
+              ),
+              10.verticalSpace,
+              Expanded(
+                child: FutureBuilder<List<Report>>(
+                  future: _userReportsFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return const Center(child: Text('Terjadi kesalahan'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('Tidak ada laporan'));
+                    }
+
+                    List<Report> reports = snapshot.data!;
+                    return ListView.builder(
+                      itemCount: reports.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Report report = reports[index];
+                        String formattedDate = DateFormat('EEEE, dd MMMM yyyy')
+                            .format(DateTime.parse(report.tanggal));
+                        return ReportItem(
+                          imageUrl: report.imageUrl,
+                          title: report.judul,
+                          date: formattedDate,
                           onTap: () {
-                            Navigator.pushNamed(context, '/report');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailReportScreen(report: report),
+                              ),
+                            );
                           },
-                          child: Container(
-                            width: 50.w,
-                            height: 50.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50.w),
-                              border: Border.all(color: Colors.black),
-                            ),
-                            child: const Center(
-                              child: Icon(Icons.add_alert),
-                            ),
-                          ),
-                        ),
-                        10.verticalSpace,
-                        Text(
-                          'Laporan',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          width: 50.w,
-                          height: 50.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50.w),
-                            border: Border.all(color: Colors.black),
-                          ),
-                          child: const Center(
-                            child: Icon(Icons.stacked_bar_chart_sharp),
-                          ),
-                        ),
-                        10.verticalSpace,
-                        Text(
-                          'Statistik',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          width: 50.w,
-                          height: 50.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50.w),
-                            border: Border.all(color: Colors.black),
-                          ),
-                          child: const Center(
-                            child: Icon(Icons.article),
-                          ),
-                        ),
-                        10.verticalSpace,
-                        Text(
-                          'Artikel',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          width: 50.w,
-                          height: 50.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50.w),
-                            border: Border.all(color: Colors.black),
-                          ),
-                          child: const Center(
-                            child: Icon(Icons.info_outline_rounded),
-                          ),
-                        ),
-                        10.verticalSpace,
-                        Text(
-                          'Informasi',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        );
+                      },
+                    );
+                  },
                 ),
               ),
             ],
