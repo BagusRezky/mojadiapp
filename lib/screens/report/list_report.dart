@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:mojadiapp/models/report_model.dart';
 import 'package:mojadiapp/screens/report/detail_report.dart';
 import 'package:mojadiapp/services/firebase_report_service.dart';
+import 'package:mojadiapp/widgets/my_report_item.dart';
 
 class ListReportScreen extends StatefulWidget {
   const ListReportScreen({super.key});
@@ -32,7 +32,7 @@ class _ListReportScreenState extends State<ListReportScreen> {
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
             fontSize: 24.sp,
-            height: 36.sp,
+            height: 1.5,
           ),
         ),
         backgroundColor: Colors.white,
@@ -57,7 +57,12 @@ class _ListReportScreenState extends State<ListReportScreen> {
             itemCount: reports.length,
             itemBuilder: (BuildContext context, int index) {
               Report report = reports[index];
-              return GestureDetector(
+              String formattedDate = DateFormat('EEEE, dd MMMM yyyy')
+                  .format(DateTime.parse(report.tanggal));
+              return ReportItem(
+                imageUrl: report.imageUrl,
+                title: report.judul,
+                date: formattedDate,
                 onTap: () {
                   Navigator.push(
                     context,
@@ -66,89 +71,10 @@ class _ListReportScreenState extends State<ListReportScreen> {
                     ),
                   );
                 },
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 12.h),
-                  width: 369.w,
-                  height: 115.h,
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(101, 206, 234, 255),
-                    borderRadius: BorderRadius.circular(11),
-                    border: Border.all(
-                      width: 1.5.sp,
-                      color: const Color.fromARGB(255, 144, 201, 248),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(child: textReport(report)),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10.sp),
-                        child: Container(
-                          width: 125.w,
-                          height: 85.h,
-                          decoration: const BoxDecoration(
-                            color: Colors.grey,
-                          ),
-                          child: report.imageUrl.isNotEmpty
-                              ? Image.network(report.imageUrl,
-                                  fit: BoxFit.cover)
-                              : const Text('No Image'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               );
             },
           );
         },
-      ),
-    );
-  }
-
-  Widget textReport(Report report) {
-    String formattedDate =
-        DateFormat('dd MMMM yyyy').format(DateTime.parse(report.tanggal));
-
-    return Container(
-      margin: EdgeInsets.only(right: 15.w),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            report.judul,
-            style: GoogleFonts.roboto(
-              fontWeight: FontWeight.bold,
-              fontSize: 14.sp,
-              color: Colors.black,
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                report.lokasi,
-                style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 11.sp,
-                  color: Color.fromARGB(155, 0, 0, 0),
-                ),
-              ),
-              Text(
-                formattedDate,
-                style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 11.sp,
-                  color: Color.fromARGB(155, 0, 0, 0),
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }
