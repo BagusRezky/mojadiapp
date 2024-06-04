@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mojadiapp/screens/auth/login.dart';
 import 'package:mojadiapp/screens/auth/register.dart';
 import 'package:mojadiapp/screens/home.dart';
+import 'package:mojadiapp/screens/onboarding/onboard.dart';
 import 'package:mojadiapp/screens/report/create_report.dart';
 import 'package:mojadiapp/screens/report/list_report.dart';
 
@@ -10,6 +11,8 @@ class Routes {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => const LoginScreen());
+      case '/onboarding':
+        return MaterialPageRoute(builder: (_) => const OnBoarding());
       case '/home':
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case '/register':
