@@ -30,7 +30,7 @@ class MainApp extends StatelessWidget {
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,
           onGenerateRoute: Routes.generateRoute, // Gunakan onGenerateRoute
-          initialRoute: '/',
+          initialRoute: '/onboarding',
         ),
       ),
     );
