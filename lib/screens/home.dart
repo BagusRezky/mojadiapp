@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(25.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -118,42 +118,47 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               10.verticalSpace,
-              Expanded(
-                child: FutureBuilder<List<Report>>(
-                  future: _userReportsFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return const Center(child: Text('Terjadi kesalahan'));
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(child: Text('Tidak ada laporan'));
-                    }
+              Container(
+                height: 150.h,
+                child: Expanded(
+                  child: FutureBuilder<List<Report>>(
+                    future: _userReportsFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return const Center(child: Text('Terjadi kesalahan'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(child: Text('Tidak ada laporan'));
+                      }
 
-                    List<Report> reports = snapshot.data!;
-                    return ListView.builder(
-                      itemCount: reports.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        Report report = reports[index];
-                        String formattedDate = DateFormat('EEEE, dd MMMM yyyy')
-                            .format(DateTime.parse(report.tanggal));
-                        return ReportItem(
-                          imageUrl: report.imageUrl,
-                          title: report.judul,
-                          date: formattedDate,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    DetailReportScreen(report: report),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    );
-                  },
+                      List<Report> reports = snapshot.data!;
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: reports.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          Report report = reports[index];
+                          String formattedDate =
+                              DateFormat('EEEE, dd MMMM yyyy')
+                                  .format(DateTime.parse(report.tanggal));
+                          return ReportItem(
+                            imageUrl: report.imageUrl,
+                            title: report.judul,
+                            date: formattedDate,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DetailReportScreen(report: report),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
             ],

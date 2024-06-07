@@ -21,9 +21,8 @@ class ReportItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 5.h),
-        width: 369.w,
-        height: 110.h,
+        margin: EdgeInsets.symmetric(horizontal: 5.h),
+        width: 253.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(11),
           border: Border.all(
