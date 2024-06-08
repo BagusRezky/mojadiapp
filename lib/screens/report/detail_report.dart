@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:mojadiapp/helper/color_styles.dart';
 import 'package:mojadiapp/models/report_model.dart';
 import 'package:mojadiapp/screens/report/components/content_detail_report.dart';
@@ -66,6 +67,7 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
           ),
         ],
       ),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
         child: SingleChildScrollView(
@@ -99,15 +101,15 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // tanggal
                       SizedBox(
-                        width: 130.w,
+                        width: 160.w,
                         child: Row(
                           children: [
                             const Icon(Icons.calendar_today),
                             8.horizontalSpace,
                             Text(
-                              widget.report.tanggal,
+                              DateFormat('EEEE, d MMMM y').format(
+                                  DateTime.parse(widget.report.tanggal)),
                               style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 12.sp,
@@ -116,10 +118,9 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
                           ],
                         ),
                       ),
-                      // kategori
                       Row(
                         children: [
-                          const Icon(Icons.category),
+                          const Icon(Icons.menu_open),
                           8.horizontalSpace,
                           Text(
                             widget.report.kategori,
@@ -136,9 +137,8 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // lokasi
                       SizedBox(
-                        width: 130.w,
+                        width: 160.w,
                         child: Row(
                           children: [
                             const Icon(Icons.location_on),
@@ -153,10 +153,9 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
                           ],
                         ),
                       ),
-                      // user email
                       Row(
                         children: [
-                          const Icon(Icons.people),
+                          const Icon(Icons.person),
                           8.horizontalSpace,
                           Text(
                             widget.report.userEmail,
@@ -211,7 +210,7 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
                                 fontSize: 14.sp,
                                 color: showDescription
                                     ? Colors.white
-                                    : ColorsConstants.darkBlue,
+                                    : const Color(0xFF898989),
                               ),
                             ),
                           ),
@@ -241,7 +240,7 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14.sp,
                                 color: showDescription
-                                    ? ColorsConstants.darkBlue
+                                    ? const Color(0xFF898989)
                                     : Colors.white,
                               ),
                             ),

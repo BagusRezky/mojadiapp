@@ -1,9 +1,9 @@
-// lib/screens/detail_report/components/report_detail_content.dart
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mojadiapp/helper/color_styles.dart';
 import 'package:mojadiapp/models/report_model.dart';
+import 'package:intl/intl.dart';
 
 class ReportDetailContent extends StatelessWidget {
   final bool showDescription;
@@ -14,6 +14,11 @@ class ReportDetailContent extends StatelessWidget {
     required this.showDescription,
     required this.report,
   });
+
+  String formatDate(DateTime dateTime) {
+    final DateFormat formatter = DateFormat('HH:mm, dd MMMM yyyy');
+    return formatter.format(dateTime);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,39 +34,77 @@ class ReportDetailContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Status:',
+                report.deskripsi,
                 style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w400,
                   fontSize: 14.sp,
                 ),
               ),
+              12.verticalSpace,
               for (var status in report.statusList)
                 Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: Column(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Status: ${status['status']}',
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                      if (status['deskripsi']!.isNotEmpty)
-                        Text(
-                          'Deskripsi Status: ${status['deskripsi']}',
-                          style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14.sp,
+                      Column(
+                        children: [
+                          Container(
+                            width: 1.w,
+                            height: 22.h,
+                            color: Colors.grey,
                           ),
-                        ),
-                      // Tampilkan timestamp pada tiap status
-                      Text(
-                        'Waktu: ${status['timestamp'].toDate().toString()}',
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14.sp,
+                          Container(
+                            width: 8.w,
+                            height: 8.h,
+                            decoration: const BoxDecoration(
+                              color: ColorsConstants.blue,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          Container(
+                            width: 1.w,
+                            height: 40.h,
+                            color: Colors.grey,
+                          ),
+                        ],
+                      ),
+                      10.horizontalSpace,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              formatDate(status['timestamp'].toDate()),
+                              style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 10.sp,
+                              ),
+                            ),
+                            4.verticalSpace,
+                            Text(
+                              '${status['status']}',
+                              style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                            Divider(
+                              color: Colors.blue[400],
+                              height: 20,
+                              thickness: 0.8,
+                              indent: 0,
+                              endIndent: 0,
+                            ),
+                            if (status['deskripsi']!.isNotEmpty)
+                              Text(
+                                '${status['deskripsi']}',
+                                style: GoogleFonts.roboto(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12.sp,
+                                ),
+                              ),
+                          ],
                         ),
                       ),
                     ],

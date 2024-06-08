@@ -104,7 +104,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
         statusList: [
           {
             'status': 'Belum Selesai',
-            'deskripsi': '',
+            'deskripsi': 'Laporan belum dikerjakan',
             'timestamp':
                 Timestamp.now(), // Menambahkan timestamp ke status awal
           }
