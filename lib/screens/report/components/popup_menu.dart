@@ -1,8 +1,7 @@
-// lib/widgets/report_popup_menu.dart
-
 import 'package:flutter/material.dart';
 import 'package:mojadiapp/models/report_model.dart';
 import 'package:mojadiapp/screens/report/edit_report.dart';
+import 'package:quickalert/quickalert.dart';
 
 class ReportPopupMenu extends StatelessWidget {
   final Report report;
@@ -17,7 +16,16 @@ class ReportPopupMenu extends StatelessWidget {
   });
 
   void _showUpdateStatusAlert(BuildContext context) {
-    onUpdateStatus();
+    if (report.statusList.last['status'] == 'Selesai') {
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: 'Oops!',
+        text: 'Status laporan sudah selesai, tidak bisa diubah lagi.',
+      );
+    } else {
+      onUpdateStatus();
+    }
   }
 
   void _deleteReport(BuildContext context) async {
@@ -27,6 +35,8 @@ class ReportPopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
+      color: Colors.white,
+      icon: const Icon(Icons.more_vert, color: Colors.black),
       onSelected: (String result) {
         switch (result) {
           case 'Update Status':

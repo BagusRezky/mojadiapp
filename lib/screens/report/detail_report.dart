@@ -108,7 +108,7 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
                             const Icon(Icons.calendar_today),
                             8.horizontalSpace,
                             Text(
-                              DateFormat('EEEE, d MMMM y').format(
+                              DateFormat('dd MMM y').format(
                                   DateTime.parse(widget.report.tanggal)),
                               style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w400,
