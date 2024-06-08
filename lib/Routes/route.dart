@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mojadiapp/screens/auth/login.dart';
+import 'package:mojadiapp/screens/auth/lupa_password.dart';
 import 'package:mojadiapp/screens/auth/register.dart';
 import 'package:mojadiapp/screens/home.dart';
 import 'package:mojadiapp/screens/onboarding/onboard.dart';
@@ -13,6 +14,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case '/onboarding':
         return MaterialPageRoute(builder: (_) => const OnBoarding());
+      case '/lupapassword':
+        return MaterialPageRoute(builder: (_) => const LupaPassword());
       case '/home':
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case '/register':

@@ -41,15 +41,22 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      backgroundColor: Color(0xFF1564C0),
+      body: Container(
+        margin: EdgeInsets.symmetric(vertical: 70.h, horizontal: 20.h),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          color: const Color(0xffffffff),
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(16.h),
+        ),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(25.h, 5.h, 25.h, 15.h),
+          child: SingleChildScrollView(
             child: Column(
               children: [
-                Image.asset('assets/logo.png', width: 200.w, height: 200.h),
+                Image.asset('assets/logo.png', width: 200.w, height: 200.h, fit: BoxFit.cover),
                 15.verticalSpace,
                 TextInputField(
                   hintText: 'Email',
@@ -132,15 +139,44 @@ class _RegisterState extends State<Register> {
                   },
                 ),
                 10.verticalSpace,
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/');
-                  },
-                  child: Text(
-                    'Sudah punya akun? Login',
-                    style: GoogleFonts.roboto(
-                      color: const Color(0xFF1564C0),
-                    ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0.h, 2.h, 0.h, 0.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0.h, 0.h, 4.h, 0.h),
+                        child: Text(
+                          'Sudah punya akun?',
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.clip,
+                          style: GoogleFonts.roboto(
+                            color: const Color(0xFF1564C0),
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/');
+                        },
+                        child: Text(
+                          'Login',
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.clip,
+                          style: GoogleFonts.roboto(
+                            color: const Color(0xFF1564C0),
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 12.sp,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
