@@ -16,65 +16,130 @@ class LoginScreen extends StatelessWidget {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 100.0),
-          child: Column(
-            children: [
-              Image(
-                image: const AssetImage('assets/logo.png'),
-                width: 257.w,
-                height: 262.h,
-              ),
-              20.verticalSpace,
-              TextInputField(
-                hintText: 'Email',
-                labelText: 'Email',
-                minLines: 1,
-                maxLines: 1,
-                controller: emailController,
-                obscure: false,
-              ),
-              15.verticalSpace,
-              TextInputField(
-                hintText: 'Password',
-                labelText: 'Password',
-                minLines: 1,
-                maxLines: 1,
-                controller: passwordController,
-                obscure: true,
-              ),
-              20.verticalSpace,
-              MyButton(
-                text: 'Login',
-                onPressed: () {
-                  Provider.of<AuthProvider>(context, listen: false).signIn(
-                    emailController.text,
-                    passwordController.text,
-                    context,
-                  );
-                },
-              ),
-              10.verticalSpace,
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/register');
-                },
-                child: SizedBox(
-                  child: Text(
-                    'Register',
-                    style: GoogleFonts.roboto(
-                      color: const Color(0xFF1564C0),
-                      fontSize: 16,
+      backgroundColor: const Color(0xFF1564C0),
+      body: Stack(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 70.h, horizontal: 20.h),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              color: const Color(0xffffffff),
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(16.h),
+            ),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(25.h, 5.h, 25.h, 15.h),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Image(
+                      image: const AssetImage('assets/logo.png'),
+                      width: 200.w,
+                      height: 200.h,
+                      fit: BoxFit.cover,
                     ),
-                  ),
+                    20.verticalSpace,
+                    TextInputField(
+                      hintText: 'Email',
+                      labelText: 'Email',
+                      minLines: 1,
+                      maxLines: 1,
+                      controller: emailController,
+                      obscure: false,
+                    ),
+                    15.verticalSpace,
+                    TextInputField(
+                      hintText: 'Password',
+                      labelText: 'Password',
+                      minLines: 1,
+                      maxLines: 1,
+                      controller: passwordController,
+                      obscure: true,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0.h, 10.h, 0.h, 30.h),
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/lupapassword');
+                          },
+                          child: Text(
+                            "Lupa Password?",
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.clip,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontStyle: FontStyle.normal,
+                              fontSize: 12.sp,
+                              color: const Color(0xFF1564C0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    MyButton(
+                      text: 'Login',
+                      onPressed: () {
+                        Provider.of<AuthProvider>(context, listen: false)
+                            .signIn(
+                          emailController.text,
+                          passwordController.text,
+                          context,
+                        );
+                      },
+                    ),
+                    10.verticalSpace,
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0.h, 2.h, 0.h, 0.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0.h, 0.h, 4.h, 0.h),
+                            child: Text(
+                              'Tidak punya akun?',
+                              textAlign: TextAlign.start,
+                              overflow: TextOverflow.clip,
+                              style: GoogleFonts.roboto(
+                                color: const Color(0xFF1564C0),
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/register');
+                            },
+                            child: Text(
+                              'Register',
+                              textAlign: TextAlign.start,
+                              overflow: TextOverflow.clip,
+                              style: GoogleFonts.roboto(
+                                color: const Color(0xFF1564C0),
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
