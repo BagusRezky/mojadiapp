@@ -40,41 +40,51 @@ class _ListReportScreenState extends State<ListReportScreen> {
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
-      body: FutureBuilder<List<Report>>(
-        future: _reportsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(child: Text('Terjadi kesalahan'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('Tidak ada laporan'));
-          }
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FutureBuilder<List<Report>>(
+            future: _reportsFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return const Center(child: Text('Terjadi kesalahan'));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(child: Text('Tidak ada laporan'));
+              }
 
-          List<Report> reports = snapshot.data!;
-          return ListView.builder(
-            padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-            itemCount: reports.length,
-            itemBuilder: (BuildContext context, int index) {
-              Report report = reports[index];
-              String formattedDate = DateFormat('EEEE, dd MMMM yyyy')
-                  .format(DateTime.parse(report.tanggal));
-              return ReportItem(
-                imageUrl: report.imageUrl,
-                title: report.judul,
-                date: formattedDate,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailReportScreen(report: report),
+              List<Report> reports = snapshot.data!;
+              return ListView.builder(
+                padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+                itemCount: reports.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Report report = reports[index];
+                  String formattedDate = DateFormat('MMM dd')
+                      .format(DateTime.parse(report.tanggal));
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: ReportItem(
+                      imageUrl: report.imageUrl,
+                      title: report.judul,
+                      date: formattedDate,
+                      lokasi: report.lokasi,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                DetailReportScreen(report: report),
+                          ),
+                        );
+                      },
                     ),
                   );
                 },
               );
             },
-          );
-        },
+          ),
+        ),
       ),
     );
   }

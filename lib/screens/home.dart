@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(25.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -118,7 +118,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               10.verticalSpace,
-              Expanded(
+              SizedBox(
+                height: 216.h,
                 child: FutureBuilder<List<Report>>(
                   future: _userReportsFuture,
                   builder: (context, snapshot) {
@@ -132,24 +133,32 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     List<Report> reports = snapshot.data!;
                     return ListView.builder(
+                      scrollDirection: Axis.horizontal,
                       itemCount: reports.length,
                       itemBuilder: (BuildContext context, int index) {
                         Report report = reports[index];
-                        String formattedDate = DateFormat('EEEE, dd MMMM yyyy')
+                        String formattedDate = DateFormat('MMM dd')
                             .format(DateTime.parse(report.tanggal));
-                        return ReportItem(
-                          imageUrl: report.imageUrl,
-                          title: report.judul,
-                          date: formattedDate,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    DetailReportScreen(report: report),
-                              ),
-                            );
-                          },
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: SizedBox(
+                            width: 253.w,
+                            child: ReportItem(
+                              imageUrl: report.imageUrl,
+                              title: report.judul,
+                              date: formattedDate,
+                              lokasi: report.lokasi,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        DetailReportScreen(report: report),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
                         );
                       },
                     );

@@ -18,25 +18,32 @@ class ReportCard extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          Ink.image(
-            image: const AssetImage('assets/coverr.jpeg'),
-            height: 180,
-            fit: BoxFit.cover,
+          const Opacity(
+            opacity: 0.5,
+            child: Image(
+              image: AssetImage('assets/cover-card.png'),
+              height: 180,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
           ),
           Container(
             height: 180,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.blue.withOpacity(0.7), Colors.transparent],
-                begin: Alignment.bottomRight,
-                end: Alignment.topLeft,
+                begin: Alignment.centerRight,
+                end: Alignment.centerLeft,
+                colors: [
+                  const Color(0xFF1564C0).withOpacity(0.8),
+                  const Color(0xFF90CAF8).withOpacity(0.6),
+                ],
               ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.3),
                   spreadRadius: 5,
                   blurRadius: 7,
-                  offset: Offset(0, 3),
+                  offset: const Offset(0, 3),
                 ),
               ],
             ),
@@ -84,7 +91,7 @@ class ReportCard extends StatelessWidget {
                 'Buat Laporan',
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: const Color(0xFF0E47A1),
                   fontSize: 14,
                 ),
               ),
