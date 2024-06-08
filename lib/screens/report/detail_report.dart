@@ -1,16 +1,27 @@
+// lib/screens/detail_report_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mojadiapp/helper/color_styles.dart';
 import 'package:mojadiapp/models/report_model.dart';
-import 'package:mojadiapp/screens/report/edit_report.dart';
+import 'package:mojadiapp/screens/report/components/content_detail_report.dart';
+import 'package:mojadiapp/screens/report/components/modal_status_update.dart';
+import 'package:mojadiapp/screens/report/components/popup_menu.dart';
 import 'package:mojadiapp/services/firebase_report_service.dart';
-import 'package:mojadiapp/widgets/my_button.dart';
-import 'package:quickalert/quickalert.dart';
+import 'package:quickalert/quickalert.dart'; // Import the new widget
 
-class DetailReportScreen extends StatelessWidget {
+class DetailReportScreen extends StatefulWidget {
   final Report report;
 
-  DetailReportScreen({required this.report});
+  const DetailReportScreen({super.key, required this.report});
+
+  @override
+  _DetailReportScreenState createState() => _DetailReportScreenState();
+}
+
+class _DetailReportScreenState extends State<DetailReportScreen> {
+  bool showDescription = true;
 
   void _showStatusAlert(BuildContext context) {
     QuickAlert.show(
@@ -21,86 +32,8 @@ class DetailReportScreen extends StatelessWidget {
     );
   }
 
-  void _showUpdateStatusAlert(BuildContext context) {
-    String newStatus = report.statusList.last['status'] ?? 'Belum Selesai';
-    String newStatusDeskripsi = '';
-
-    QuickAlert.show(
-      context: context,
-      type: QuickAlertType.confirm,
-      title: 'Update Status',
-      widget: StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {
-          return Column(
-            children: [
-              DropdownButton<String>(
-                value: newStatus,
-                items: ['Belum Selesai', 'Proses', 'Selesai']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: GoogleFonts.roboto(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                  );
-                }).toList(),
-                onChanged: (String? value) {
-                  setState(() {
-                    newStatus = value!;
-                  });
-                },
-              ),
-              if (newStatus == 'Proses' || newStatus == 'Selesai')
-                TextField(
-                  onChanged: (value) {
-                    newStatusDeskripsi = value;
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Deskripsi Status',
-                    labelStyle: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14.sp,
-                    ),
-                  ),
-                ),
-            ],
-          );
-        },
-      ),
-      onConfirmBtnTap: () async {
-        try {
-          await FirebaseReportService().updateReportStatus(
-            report.id,
-            newStatus,
-            newStatusDeskripsi,
-          );
-          Navigator.pop(context); // Menutup QuickAlert dialog
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.success,
-            title: 'Success',
-            text: 'Status laporan berhasil diubah.',
-          );
-        } catch (e) {
-          print('Error updating status: $e');
-          Navigator.pop(context); // Menutup QuickAlert dialog
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.error,
-            title: 'Error',
-            text: 'Gagal mengubah status laporan. Coba lagi.',
-          );
-        }
-      },
-    );
-  }
-
   void _deleteReport(BuildContext context) async {
-    await FirebaseReportService().deleteReport(report.id);
+    await FirebaseReportService().deleteReport(widget.report.id);
     Navigator.pop(context);
     QuickAlert.show(
       context: context,
@@ -119,12 +52,19 @@ class DetailReportScreen extends StatelessWidget {
           style: GoogleFonts.roboto(
             fontWeight: FontWeight.w600,
             fontSize: 24.sp,
-            height: 36.sp,
           ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
+        actions: [
+          ReportPopupMenu(
+            report: widget.report,
+            onUpdateStatus: () =>
+                UpdateStatusModal.show(context, widget.report),
+            onDelete: () => _deleteReport(context),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
@@ -136,17 +76,18 @@ class DetailReportScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.sp),
                 child: Container(
                   height: 192.h,
+                  width: double.infinity,
                   decoration: const BoxDecoration(
                     color: Colors.grey,
                   ),
-                  child: report.imageUrl.isNotEmpty
-                      ? Image.network(report.imageUrl, fit: BoxFit.cover)
+                  child: widget.report.imageUrl.isNotEmpty
+                      ? Image.network(widget.report.imageUrl, fit: BoxFit.cover)
                       : const Text('No Image'),
                 ),
               ),
               10.verticalSpace,
               Text(
-                report.judul,
+                widget.report.judul,
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.w700,
                   fontSize: 20.sp,
@@ -166,7 +107,7 @@ class DetailReportScreen extends StatelessWidget {
                             const Icon(Icons.calendar_today),
                             8.horizontalSpace,
                             Text(
-                              report.tanggal,
+                              widget.report.tanggal,
                               style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 12.sp,
@@ -181,7 +122,7 @@ class DetailReportScreen extends StatelessWidget {
                           const Icon(Icons.category),
                           8.horizontalSpace,
                           Text(
-                            report.kategori,
+                            widget.report.kategori,
                             style: GoogleFonts.roboto(
                               fontWeight: FontWeight.w400,
                               fontSize: 12.sp,
@@ -203,7 +144,7 @@ class DetailReportScreen extends StatelessWidget {
                             const Icon(Icons.location_on),
                             8.horizontalSpace,
                             Text(
-                              report.lokasi,
+                              widget.report.lokasi,
                               style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 12.sp,
@@ -218,7 +159,7 @@ class DetailReportScreen extends StatelessWidget {
                           const Icon(Icons.people),
                           8.horizontalSpace,
                           Text(
-                            report.userEmail,
+                            widget.report.userEmail,
                             style: GoogleFonts.roboto(
                               fontWeight: FontWeight.w400,
                               fontSize: 12.sp,
@@ -231,88 +172,90 @@ class DetailReportScreen extends StatelessWidget {
                 ],
               ),
               16.verticalSpace,
-              Text(
-                report.deskripsi,
-                style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14.sp,
+              Container(
+                width: double.infinity,
+                height: 34.h,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(5.sp),
                 ),
-              ),
-              16.verticalSpace,
-              Text(
-                'Status:',
-                style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
-                ),
-              ),
-              for (var status in report.statusList)
-                Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Status: ${status['status']}',
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                      if (status['deskripsi']!.isNotEmpty)
-                        Text(
-                          'Deskripsi Status: ${status['deskripsi']}',
-                          style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14.sp,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            showDescription = true;
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: showDescription
+                                ? ColorsConstants.blue
+                                : ColorsConstants.lightBlue,
+                            borderRadius: BorderRadius.horizontal(
+                                left: Radius.circular(5.sp)),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Deskripsi',
+                              style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14.sp,
+                                color: showDescription
+                                    ? Colors.white
+                                    : ColorsConstants.darkBlue,
+                              ),
+                            ),
                           ),
                         ),
-                      // Tampilkan timestamp pada tiap status
-                      Text(
-                        'Waktu: ${status['timestamp'].toDate().toString()}',
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14.sp,
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            showDescription = false;
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: showDescription
+                                ? ColorsConstants.lightBlue
+                                : ColorsConstants.blue,
+                            borderRadius: BorderRadius.horizontal(
+                              right: Radius.circular(5.sp),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Perkembangan',
+                              style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14.sp,
+                                color: showDescription
+                                    ? ColorsConstants.darkBlue
+                                    : Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              16.verticalSpace,
-              Text(
-                'Waktu: ${report.timestamp.toDate().toString()}',
-                style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14.sp,
+                    ),
+                  ],
                 ),
               ),
               16.verticalSpace,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  MyButton(
-                    text: 'Update',
-                    onPressed: () => _showUpdateStatusAlert(context),
-                  ),
-                  8.horizontalSpace,
-                  MyButton(
-                    text: 'Edit',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              EditReportScreen(report: report),
-                        ),
-                      );
-                    },
-                  ),
-                  8.horizontalSpace,
-                  MyButton(
-                    text: 'Delete',
-                    onPressed: () => _deleteReport(context),
-                  ),
-                ],
+              ReportDetailContent(
+                showDescription: showDescription,
+                report: widget.report,
               ),
             ],
           ),
