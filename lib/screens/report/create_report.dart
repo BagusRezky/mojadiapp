@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,9 +26,9 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
   final TextEditingController _deskripsiController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _lokasiController = TextEditingController();
-  final TextEditingController _kategoryController = TextEditingController();
   File? _image;
   final ImagePicker _picker = ImagePicker();
+  String? _selectedCategory;
 
   final List<String> categories = [
     'Pelanggaran Lingkungan',
@@ -67,7 +66,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
         _deskripsiController.text.isEmpty ||
         _dateController.text.isEmpty ||
         _lokasiController.text.isEmpty ||
-        _kategoryController.text.isEmpty) {
+        _selectedCategory == null) {
       QuickAlert.show(
         context: context,
         type: QuickAlertType.error,
@@ -99,10 +98,17 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
         deskripsi: _deskripsiController.text,
         tanggal: _dateController.text,
         lokasi: _lokasiController.text,
-        kategori: _kategoryController.text,
+        kategori: _selectedCategory!,
         imageUrl: imageUrl,
         userEmail: userEmail,
-        status: 'Belum Selesai',
+        statusList: [
+          {
+            'status': 'Belum Selesai',
+            'deskripsi': '',
+            'timestamp':
+                Timestamp.now(), // Menambahkan timestamp ke status awal
+          }
+        ], // Status awal
         timestamp: Timestamp.now(),
       );
 
@@ -114,7 +120,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
         _deskripsiController.clear();
         _dateController.clear();
         _lokasiController.clear();
-        _kategoryController.clear();
+        _selectedCategory = null;
       });
 
       // Close loading indicator
@@ -310,7 +316,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                           .toList(),
                       onChanged: (String? value) {
                         setState(() {
-                          _kategoryController.text = value!;
+                          _selectedCategory = value;
                         });
                       },
                     ),

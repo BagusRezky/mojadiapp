@@ -110,7 +110,7 @@ class _EditReportScreenState extends State<EditReportScreen> {
         kategori: _kategoryController.text,
         imageUrl: imageUrl,
         userEmail: widget.report.userEmail,
-        status: widget.report.status,
+        statusList: widget.report.statusList,
         timestamp: widget.report.timestamp,
       );
 

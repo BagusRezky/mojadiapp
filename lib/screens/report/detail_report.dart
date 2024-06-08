@@ -1,11 +1,8 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mojadiapp/models/report_model.dart';
 import 'package:mojadiapp/screens/report/edit_report.dart';
-// import 'package:mojadiapp/screens/edit_report_screen.dart';
 import 'package:mojadiapp/services/firebase_report_service.dart';
 import 'package:mojadiapp/widgets/my_button.dart';
 import 'package:quickalert/quickalert.dart';
@@ -25,12 +22,8 @@ class DetailReportScreen extends StatelessWidget {
   }
 
   void _showUpdateStatusAlert(BuildContext context) {
-    if (report.status == 'Selesai') {
-      _showStatusAlert(context);
-      return;
-    }
-
-    String newStatus = report.status;
+    String newStatus = report.statusList.last['status'] ?? 'Belum Selesai';
+    String newStatusDeskripsi = '';
 
     QuickAlert.show(
       context: context,
@@ -38,43 +31,70 @@ class DetailReportScreen extends StatelessWidget {
       title: 'Update Status',
       widget: StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
-          return Center(
-            child: DropdownButton<String>(
-              value: newStatus,
-              items: ['Belum Selesai', 'Selesai']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: GoogleFonts.roboto(
+          return Column(
+            children: [
+              DropdownButton<String>(
+                value: newStatus,
+                items: ['Belum Selesai', 'Proses', 'Selesai']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (String? value) {
+                  setState(() {
+                    newStatus = value!;
+                  });
+                },
+              ),
+              if (newStatus == 'Proses' || newStatus == 'Selesai')
+                TextField(
+                  onChanged: (value) {
+                    newStatusDeskripsi = value;
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Deskripsi Status',
+                    labelStyle: GoogleFonts.roboto(
                       fontWeight: FontWeight.w400,
                       fontSize: 14.sp,
                     ),
                   ),
-                );
-              }).toList(),
-              onChanged: (String? value) {
-                setState(() {
-                  newStatus = value!;
-                });
-              },
-            ),
+                ),
+            ],
           );
         },
       ),
       onConfirmBtnTap: () async {
-        await FirebaseReportService().updateReportStatus(
-          report.id,
-          newStatus,
-        );
-        Navigator.pop(context);
-        QuickAlert.show(
-          context: context,
-          type: QuickAlertType.success,
-          title: 'Success',
-          text: 'Status laporan berhasil diubah.',
-        );
+        try {
+          await FirebaseReportService().updateReportStatus(
+            report.id,
+            newStatus,
+            newStatusDeskripsi,
+          );
+          Navigator.pop(context); // Menutup QuickAlert dialog
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            title: 'Success',
+            text: 'Status laporan berhasil diubah.',
+          );
+        } catch (e) {
+          print('Error updating status: $e');
+          Navigator.pop(context); // Menutup QuickAlert dialog
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Error',
+            text: 'Gagal mengubah status laporan. Coba lagi.',
+          );
+        }
       },
     );
   }
@@ -138,7 +158,7 @@ class DetailReportScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // lokasi
+                      // tanggal
                       SizedBox(
                         width: 130.w,
                         child: Row(
@@ -155,8 +175,7 @@ class DetailReportScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      // 35.horizontalSpace,
-                      // category
+                      // kategori
                       Row(
                         children: [
                           const Icon(Icons.category),
@@ -193,6 +212,7 @@ class DetailReportScreen extends StatelessWidget {
                           ],
                         ),
                       ),
+                      // user email
                       Row(
                         children: [
                           const Icon(Icons.people),
@@ -220,7 +240,47 @@ class DetailReportScreen extends StatelessWidget {
               ),
               16.verticalSpace,
               Text(
-                'Status: ${report.status}',
+                'Status:',
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14.sp,
+                ),
+              ),
+              for (var status in report.statusList)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Status: ${status['status']}',
+                        style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                      if (status['deskripsi']!.isNotEmpty)
+                        Text(
+                          'Deskripsi Status: ${status['deskripsi']}',
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                      // Tampilkan timestamp pada tiap status
+                      Text(
+                        'Waktu: ${status['timestamp'].toDate().toString()}',
+                        style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              16.verticalSpace,
+              Text(
+                'Waktu: ${report.timestamp.toDate().toString()}',
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.w400,
                   fontSize: 14.sp,

@@ -9,7 +9,8 @@ class Report {
   String kategori;
   String imageUrl;
   String userEmail;
-  String status;
+  List<Map<String, dynamic>>
+      statusList; // Menggunakan dynamic untuk menyertakan timestamp
   Timestamp timestamp;
 
   Report({
@@ -21,7 +22,7 @@ class Report {
     required this.kategori,
     required this.imageUrl,
     required this.userEmail,
-    this.status = 'Belum Selesai',
+    required this.statusList,
     required this.timestamp,
   });
 
@@ -35,7 +36,9 @@ class Report {
       'kategori': kategori,
       'image_url': imageUrl,
       'user_email': userEmail,
-      'status': status,
+      'status_list': statusList
+          .map((status) => Map<String, dynamic>.from(status))
+          .toList(),
       'timestamp': timestamp,
     };
   }
@@ -51,7 +54,8 @@ class Report {
       kategori: map['kategori'] ?? '',
       imageUrl: map['image_url'] ?? '',
       userEmail: map['user_email'] ?? '',
-      status: map['status'] ?? 'Belum Selesai',
+      statusList: List<Map<String, dynamic>>.from((map['status_list'] ?? [])
+          .map((status) => Map<String, dynamic>.from(status))),
       timestamp: map['timestamp'] ?? Timestamp.now(),
     );
   }
