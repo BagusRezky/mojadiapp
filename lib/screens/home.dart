@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -74,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: 'Laporan',
                     boxColor: Colors.blue.withOpacity(0.1),
                     iconColor: const Color(0xFF103374),
-                    icon: Icons.add_alert,
+                    icon: Icons.file_copy,
                     onTap: () {
                       Navigator.pushNamed(context, '/report');
                     },
@@ -94,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     iconColor: const Color(0xFF259F46),
                     icon: Icons.article,
                     onTap: () {
-                      Navigator.pushNamed(context, '/report');
+                      Navigator.pushNamed(context, '/article');
                     },
                   ),
                   MyMenu(

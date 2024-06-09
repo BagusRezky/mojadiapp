@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mojadiapp/screens/artikel/create_article.dart';
+import 'package:mojadiapp/screens/artikel/list_article.dart';
 import 'package:mojadiapp/screens/auth/login.dart';
 import 'package:mojadiapp/screens/auth/lupa_password.dart';
 import 'package:mojadiapp/screens/auth/register.dart';
@@ -24,6 +26,10 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const ListReportScreen());
       case '/report/create':
         return MaterialPageRoute(builder: (_) => const CreateReportScreen());
+      case '/article':
+        return MaterialPageRoute(builder: (_) => const ListArticleScreen());
+      case '/article/create':
+        return MaterialPageRoute(builder: (_) => const CreateArticleScreen());
       default:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
     }
