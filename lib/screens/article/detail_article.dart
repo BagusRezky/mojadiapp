@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mojadiapp/models/article_model.dart';
-import 'package:mojadiapp/screens/artikel/components/popup_menu.dart';
+import 'package:mojadiapp/screens/article/components/popup_menu.dart';
 import 'package:mojadiapp/services/firebase_article_service.dart';
 
 class DetailArticleScreen extends StatelessWidget {

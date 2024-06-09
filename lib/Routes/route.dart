@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mojadiapp/screens/artikel/create_article.dart';
-import 'package:mojadiapp/screens/artikel/list_article.dart';
+import 'package:mojadiapp/screens/article/create_article.dart';
+import 'package:mojadiapp/screens/article/list_article.dart';
 import 'package:mojadiapp/screens/auth/login.dart';
 import 'package:mojadiapp/screens/auth/lupa_password.dart';
 import 'package:mojadiapp/screens/auth/register.dart';

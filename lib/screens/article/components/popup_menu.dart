@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mojadiapp/models/article_model.dart';
-import 'package:mojadiapp/screens/artikel/edit_article.dart';
+import 'package:mojadiapp/screens/article/edit_article.dart';
 
 class ArticlePopupMenu extends StatelessWidget {
   final Article article;

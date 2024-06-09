@@ -6,8 +6,8 @@ import 'package:mojadiapp/widgets/my_menu.dart';
 import 'package:mojadiapp/services/firebase_report_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mojadiapp/models/report_model.dart';
-import 'package:mojadiapp/widgets/my_report_card.dart';
-import 'package:mojadiapp/widgets/my_report_item.dart';
+import 'package:mojadiapp/screens/report/components/my_report_card.dart';
+import 'package:mojadiapp/screens/report/components/my_report_item.dart';
 import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
