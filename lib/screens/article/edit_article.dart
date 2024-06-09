@@ -98,6 +98,7 @@ class _EditArticleScreenState extends State<EditArticleScreen> {
         text: 'Artikel berhasil diperbarui',
         onConfirmBtnTap: () {
           Navigator.pop(context);
+          Navigator.pop(context);
         },
       );
     } catch (e) {

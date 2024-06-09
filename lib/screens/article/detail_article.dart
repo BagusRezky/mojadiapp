@@ -48,6 +48,7 @@ class DetailArticleScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
       ),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
         child: SingleChildScrollView(
