@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,9 +10,9 @@ class TextInputField extends StatelessWidget {
   final int minLines;
   final int maxLines;
   final bool obscure;
-  final TextEditingController controller;
+  TextEditingController controller;
 
-  const TextInputField({
+  TextInputField({
     super.key,
     required this.hintText,
     required this.labelText,
