@@ -179,7 +179,15 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                         decoration: BoxDecoration(
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: Colors.black),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 1,
+                              blurRadius: 2,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                          // border: Border.all(color: Colors.black),
                         ),
                         child: _image == null
                             ? Column(

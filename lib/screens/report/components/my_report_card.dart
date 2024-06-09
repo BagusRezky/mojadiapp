@@ -5,9 +5,9 @@ class ReportCard extends StatelessWidget {
   final BuildContext context;
 
   const ReportCard({
-    Key? key,
+    super.key,
     required this.context,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

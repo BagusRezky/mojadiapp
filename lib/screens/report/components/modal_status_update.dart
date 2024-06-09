@@ -12,14 +12,14 @@ class UpdateStatusModal {
     String newStatus = currentStatus;
     String newStatusDeskripsi = '';
 
-    List<String> statusOptions;
-    if (currentStatus == 'Belum Selesai') {
-      statusOptions = ['Proses', 'Selesai'];
-    } else if (currentStatus == 'Proses') {
-      statusOptions = ['Selesai'];
-    } else {
-      statusOptions = [];
-    }
+    // List<String> statusOptions;
+    // if (currentStatus == 'Belum Selesai') {
+    //   statusOptions = ['Proses', 'Selesai'];
+    // } else if (currentStatus == 'Proses') {
+    //   statusOptions = ['Selesai'];
+    // } else {
+    //   statusOptions = [];
+    // }
 
     showModalBottomSheet(
       context: context,
