@@ -22,25 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
-  late Future<List<Report>> _userReportsFuture;
-  late Future<List<Article>> _articlesFuture;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  @override
-  void initState() {
-    super.initState();
-    _userReportsFuture = _fetchUserReports();
-    _articlesFuture = FirebaseArticleService().fetchArticles();
-  }
-
-  Future<List<Report>> _fetchUserReports() async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      return await FirebaseReportService().fetchUserReports(user.email!);
-    } else {
-      return [];
-    }
-  }
 
   void onItemTapped(int index) {
     setState(() {
@@ -139,8 +121,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       10.verticalSpace,
                       SizedBox(
                         height: 216.h,
-                        child: FutureBuilder<List<Report>>(
-                          future: _userReportsFuture,
+                        child: StreamBuilder<List<Report>>(
+                          stream: FirebaseReportService()
+                              .fetchUserReportsStream(
+                                  _auth.currentUser?.email ?? ''),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -202,8 +186,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       10.verticalSpace,
                       SizedBox(
                         height: 220.h,
-                        child: FutureBuilder<List<Article>>(
-                          future: _articlesFuture,
+                        child: StreamBuilder<List<Article>>(
+                          stream:
+                              FirebaseArticleService().fetchArticlesStream(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
