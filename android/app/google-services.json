@@ -12,7 +12,20 @@
           "package_name": "com.example.mojadiapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "569640058105-efj241tqqtm8h253utu8q1f54pjq2r9o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mojadiapp",
+            "certificate_hash": "291773e7481de146722b1618d16b6a0923f6aeb5"
+          }
+        },
+        {
+          "client_id": "569640058105-nniie4bljqim4gpf7q7lq4l2hap3sngn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCYuE6D8KCC5wgWvfh2whuxJfySJ04pSdA"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "569640058105-nniie4bljqim4gpf7q7lq4l2hap3sngn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "569640058105-4qp0jgmiba0jukd6upupp3krq2rtmnjp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mojadiapp"
+              }
+            }
+          ]
         }
       }
     }

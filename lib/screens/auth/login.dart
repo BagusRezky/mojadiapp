@@ -41,8 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Image(
                   image: const AssetImage('assets/logo.png'),
-                  width: 200.w,
-                  height: 200.h,
+                  width: 150.w,
+                  height: 150.h,
                   fit: BoxFit.cover,
                 ),
                 20.verticalSpace,
@@ -88,8 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 MyButton(
                   text: 'Login',
                   onPressed: () {
-                    Provider.of<AuthProvider>(context, listen: false)
-                        .signIn(
+                    Provider.of<AuthProvider>(context, listen: false).signIn(
                       emailController.text,
                       passwordController.text,
                       context,
@@ -137,6 +136,66 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
+                10.verticalSpace,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        height: 10.h,
+                        thickness: 1.h,
+                        color: const Color(0xFF1564C0),
+                      ),
+                    ),
+                    Text(
+                      'Atau',
+                      style: GoogleFonts.roboto(
+                        color: const Color(0xFF1564C0),
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        height: 10.h,
+                        thickness: 1.h,
+                        color: const Color(0xFF1564C0),
+                      ),
+                    ),
+                  ],
+                ),
+                10.verticalSpace,
+                SizedBox(
+                  width: 215.w,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .signInWithGoogle(context);
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: const Color(0xff000000),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.g_mobiledata_rounded,
+                          color: Colors.red,
+                        ),
+                        5.horizontalSpace,
+                        Text(
+                          'Login dengan Google',
+                          style: GoogleFonts.roboto(
+                            color: const Color(0xFFFFFFFF),
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),

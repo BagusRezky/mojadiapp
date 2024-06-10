@@ -56,4 +56,21 @@ class AuthProvider with ChangeNotifier {
           message: "Failed to send reset email", code: e.toString());
     }
   }
+
+  Future<void> signInWithGoogle(BuildContext context) async {
+    try {
+      _user = await _authService.signInWithGoogle();
+      notifyListeners();
+      if (_user != null) {
+        Navigator.pushNamed(context, '/home');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Failed to sign in with Google: ${e.toString()}')),
+      );
+    }
+  }
+
+  
 }
