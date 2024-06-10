@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mojadiapp/helper/color_styles.dart';
 import 'package:mojadiapp/models/article_model.dart';
 import 'package:mojadiapp/screens/article/components/card_article.home.dart';
 import 'package:mojadiapp/screens/report/detail_report.dart';
@@ -110,13 +111,32 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       20.verticalSpace,
-                      Text(
-                        'Laporanmu!',
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20.sp,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Laporanmu!',
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: 20.sp,
+                            ),
+                          ),
+                          // see more
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/report');
+                            },
+                            child: Text(
+                              'Lihat Semua',
+                              style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.w400,
+                                color: ColorsConstants.blue,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       10.verticalSpace,
                       SizedBox(
@@ -175,13 +195,32 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       10.verticalSpace,
-                      Text(
-                        'Artikel Terbaru!',
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20.sp,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Artikel Terbaru!',
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: 20.sp,
+                            ),
+                          ),
+                          // see more
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/article');
+                            },
+                            child: Text(
+                              'Lihat Semua',
+                              style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.w400,
+                                color: ColorsConstants.blue,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       10.verticalSpace,
                       SizedBox(

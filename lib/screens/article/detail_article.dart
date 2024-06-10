@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:mojadiapp/models/article_model.dart';
 import 'package:mojadiapp/screens/article/components/popup_menu.dart';
 import 'package:mojadiapp/services/firebase_article_service.dart';
+import 'package:quickalert/quickalert.dart';
 
 class DetailArticleScreen extends StatelessWidget {
   final Article article;
@@ -15,8 +16,11 @@ class DetailArticleScreen extends StatelessWidget {
   void _deleteArticle(BuildContext context) async {
     await FirebaseArticleService().deleteArticle(article.id);
     Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Artikel berhasil dihapus')),
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      title: 'Success',
+      text: 'Artikel berhasil dihapus',
     );
   }
 
