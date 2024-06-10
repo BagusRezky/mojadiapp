@@ -12,15 +12,6 @@ class UpdateStatusModal {
     String newStatus = currentStatus;
     String newStatusDeskripsi = '';
 
-    // List<String> statusOptions;
-    // if (currentStatus == 'Belum Selesai') {
-    //   statusOptions = ['Proses', 'Selesai'];
-    // } else if (currentStatus == 'Proses') {
-    //   statusOptions = ['Selesai'];
-    // } else {
-    //   statusOptions = [];
-    // }
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -38,6 +29,25 @@ class UpdateStatusModal {
           ),
           child: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
+              // Determine available statuses based on current status
+              List<String> availableStatuses;
+              if (currentStatus == 'Belum Selesai') {
+                availableStatuses = ['Belum Selesai', 'Proses', 'Selesai'];
+                if (!availableStatuses.contains(newStatus)) {
+                  newStatus = availableStatuses.first;
+                }
+              } else if (currentStatus == 'Proses') {
+                availableStatuses = ['Proses', 'Selesai'];
+                if (!availableStatuses.contains(newStatus)) {
+                  newStatus = availableStatuses.first;
+                }
+              } else {
+                availableStatuses = [currentStatus];
+                if (!availableStatuses.contains(newStatus)) {
+                  newStatus = availableStatuses.first;
+                }
+              }
+
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -78,7 +88,7 @@ class UpdateStatusModal {
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     value: newStatus,
-                    items: ['Belum Selesai', 'Proses', 'Selesai']
+                    items: availableStatuses
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,

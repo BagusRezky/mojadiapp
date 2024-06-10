@@ -36,7 +36,22 @@ class FirebaseReportService {
   }
 
   Future<void> updateReport(Report report) async {
-    await _db.collection('reports').doc(report.id).update(report.toMap());
+    DocumentReference reportRef = _db.collection('reports').doc(report.id);
+    DocumentSnapshot reportSnapshot = await reportRef.get();
+    if (reportSnapshot.exists) {
+      Map<String, dynamic> existingData =
+          reportSnapshot.data() as Map<String, dynamic>;
+      List<Map<String, dynamic>> existingStatusList =
+          List<Map<String, dynamic>>.from(existingData['status_list']);
+
+      // Update report data while preserving existing status_list
+      Map<String, dynamic> updatedData = report.toMap();
+      updatedData['status_list'] = existingStatusList;
+
+      await reportRef.update(updatedData);
+    } else {
+      await reportRef.set(report.toMap());
+    }
   }
 
   Future<void> updateReportStatus(
@@ -66,15 +81,19 @@ class FirebaseReportService {
     await _db.collection('reports').doc(reportId).delete();
   }
 
-  Future<List<Report>> fetchUserReports(String userEmail) async {
-    QuerySnapshot snapshot = await _db
+  Stream<List<Report>> fetchUserReportsStream(String userEmail) {
+    return _db
         .collection('reports')
         .where('user_email', isEqualTo: userEmail)
         .orderBy('timestamp', descending: true)
-        .get();
-    return snapshot.docs
-        .map(
-            (doc) => Report.fromMap(doc.data() as Map<String, dynamic>, doc.id))
-        .toList();
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => Report.fromMap(doc.data(), doc.id))
+            .toList());
+  }
+
+  Stream<Report> fetchReportStream(String reportId) {
+    return _db.collection('reports').doc(reportId).snapshots().map((snapshot) =>
+        Report.fromMap(snapshot.data() as Map<String, dynamic>, snapshot.id));
   }
 }

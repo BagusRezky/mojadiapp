@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mojadiapp/helper/color_styles.dart';
 import 'package:mojadiapp/models/article_model.dart';
 import 'package:mojadiapp/screens/article/components/card_article.home.dart';
 import 'package:mojadiapp/screens/report/detail_report.dart';
@@ -22,25 +23,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
-  late Future<List<Report>> _userReportsFuture;
-  late Future<List<Article>> _articlesFuture;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  @override
-  void initState() {
-    super.initState();
-    _userReportsFuture = _fetchUserReports();
-    _articlesFuture = FirebaseArticleService().fetchArticles();
-  }
-
-  Future<List<Report>> _fetchUserReports() async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      return await FirebaseReportService().fetchUserReports(user.email!);
-    } else {
-      return [];
-    }
-  }
 
   void onItemTapped(int index) {
     setState(() {
@@ -128,19 +111,40 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       20.verticalSpace,
-                      Text(
-                        'Laporanmu!',
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20.sp,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Laporanmu!',
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: 20.sp,
+                            ),
+                          ),
+                          // see more
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/report');
+                            },
+                            child: Text(
+                              'Lihat Semua',
+                              style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.w400,
+                                color: ColorsConstants.blue,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       10.verticalSpace,
                       SizedBox(
                         height: 216.h,
-                        child: FutureBuilder<List<Report>>(
-                          future: _userReportsFuture,
+                        child: StreamBuilder<List<Report>>(
+                          stream: FirebaseReportService()
+                              .fetchUserReportsStream(
+                                  _auth.currentUser?.email ?? ''),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -191,19 +195,39 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       10.verticalSpace,
-                      Text(
-                        'Artikel Terbaru!',
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20.sp,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Artikel Terbaru!',
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: 20.sp,
+                            ),
+                          ),
+                          // see more
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/article');
+                            },
+                            child: Text(
+                              'Lihat Semua',
+                              style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.w400,
+                                color: ColorsConstants.blue,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       10.verticalSpace,
                       SizedBox(
                         height: 220.h,
-                        child: FutureBuilder<List<Article>>(
-                          future: _articlesFuture,
+                        child: StreamBuilder<List<Article>>(
+                          stream:
+                              FirebaseArticleService().fetchArticlesStream(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {

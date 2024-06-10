@@ -33,6 +33,15 @@ class FirebaseArticleService {
     }
   }
 
+  Stream<List<Article>> fetchArticlesStream() {
+    return _db
+        .collection('articles')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Article.fromFirestore(doc)).toList());
+  }
+
   Future<void> updateArticle(Article article) async {
     await _db.collection('articles').doc(article.id).update(article.toMap());
   }
