@@ -6,8 +6,10 @@ import 'package:mojadiapp/screens/auth/lupa_password.dart';
 import 'package:mojadiapp/screens/auth/register.dart';
 import 'package:mojadiapp/screens/home.dart';
 import 'package:mojadiapp/screens/onboarding/onboard.dart';
+import 'package:mojadiapp/screens/profile/profile.dart';
 import 'package:mojadiapp/screens/report/create_report.dart';
 import 'package:mojadiapp/screens/report/list_report.dart';
+import 'package:mojadiapp/screens/statistik/statistik.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -30,6 +32,10 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const ListArticleScreen());
       case '/article/create':
         return MaterialPageRoute(builder: (_) => const CreateArticleScreen());
+      case '/statistik':
+        return MaterialPageRoute(builder: (_) => const Statistik());
+      case '/profile':
+        return MaterialPageRoute(builder: (_) => ProfileScreen());
       default:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
     }

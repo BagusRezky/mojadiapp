@@ -29,6 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       selectedIndex = index;
     });
+    if (index == 1) {
+      Navigator.pushNamed(context, '/profile');
+    }
   }
 
   @override
@@ -87,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             iconColor: const Color(0xFFFF3B30),
                             icon: Icons.bar_chart,
                             onTap: () {
-                              Navigator.pushNamed(context, '/report');
+                              Navigator.pushNamed(context, '/statistik');
                             },
                           ),
                           MyMenu(
