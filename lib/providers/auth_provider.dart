@@ -72,5 +72,35 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  
+  Future<void> signOut(BuildContext context) async {
+    try {
+      await _authService.signOut();
+      _user = null;
+      notifyListeners();
+      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to sign out: ${e.toString()}')),
+      );
+    }
+  }
+
+  Future<AppUser?> getUserProfile() async {
+    _user = await _authService.getUserProfile();
+    notifyListeners();
+    return _user;
+  }
+
+  Future<void> updateUserProfile(
+      String displayName, String birthDate, String address) async {
+    if (_user != null) {
+      _user = _user!.copyWith(
+        displayName: displayName,
+        birthDate: birthDate,
+        address: address,
+      );
+      await _authService.updateUserProfile(_user!);
+      notifyListeners();
+    }
+  }
 }

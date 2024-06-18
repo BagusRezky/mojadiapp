@@ -1,25 +1,19 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:mojadiapp/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 const String tProfileImage = "assets/male.png";
 
 class UpdateProfileScreen extends StatefulWidget {
-  final DocumentSnapshot userProfile;
-
-  const UpdateProfileScreen({
-    required this.userProfile,
-    Key? key,
-  }) : super(key: key);
-
   @override
   _UpdateProfileScreenState createState() => _UpdateProfileScreenState();
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
-  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController displayNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController birthDateController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
@@ -27,10 +21,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   @override
   void initState() {
     super.initState();
-    fullNameController.text = widget.userProfile['fullName'] ?? '';
-    emailController.text = widget.userProfile['email'] ?? '';
-    birthDateController.text = widget.userProfile['birthDate'] ?? '';
-    addressController.text = widget.userProfile['address'] ?? '';
+    final userProfile = Provider.of<AuthProvider>(context, listen: false).user;
+    if (userProfile != null) {
+      displayNameController.text = userProfile.displayName;
+      emailController.text = userProfile.email;
+      birthDateController.text = userProfile.birthDate;
+      addressController.text = userProfile.address;
+    }
   }
 
   void _selectDate() async {
@@ -49,23 +46,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
 
   void _saveProfile() {
-    String fullName = fullNameController.text;
+    String displayName = displayNameController.text;
     String birthDate = birthDateController.text;
     String address = addressController.text;
 
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(widget.userProfile.id)
-        .update({
-      'fullName': fullName,
-      'birthDate': birthDate,
-      'address': address,
-    }).then((_) {
-      Navigator.pop(context, {
-        'fullName': fullName,
-        'birthDate': birthDate,
-        'address': address,
-      });
+    Provider.of<AuthProvider>(context, listen: false)
+        .updateUserProfile(displayName, birthDate, address)
+        .then((_) {
+      Navigator.pop(context);
     }).catchError((error) {
       print("Failed to update user profile: $error");
     });
@@ -100,28 +88,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   child: const Image(image: AssetImage(tProfileImage)),
                 ),
               ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: Container(
-                  width: 70,
-                  height: 35,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: Colors.yellow),
-                  child: const Icon(
-                    LineAwesomeIcons.camera_solid,
-                    color: Colors.black,
-                    size: 25,
-                  ),
-                ),
-              ),
               const SizedBox(height: 50),
               Form(
                 child: Column(
                   children: [
                     TextFormField(
-                      controller: fullNameController,
+                      controller: displayNameController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(100),
@@ -206,7 +178,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       width: double.infinity,
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, '/profile');
+                          Navigator.pop(context);
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 12),

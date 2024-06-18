@@ -12,4 +12,20 @@ class AppUser {
     required this.birthDate,
     required this.address,
   });
+
+  AppUser copyWith({
+    String? uid,
+    String? email,
+    String? displayName,
+    String? birthDate,
+    String? address,
+  }) {
+    return AppUser(
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      displayName: displayName ?? this.displayName,
+      birthDate: birthDate ?? this.birthDate,
+      address: address ?? this.address,
+    );
+  }
 }
