@@ -30,14 +30,16 @@ class AuthService {
 
     if (user != null) {
       await _db.collection('users').doc(user.uid).set({
+        'uid': user.uid,
         'email': email,
         'birthDate': birthDate,
         'address': address,
+        'displayName': user.displayName ?? ''
       });
       return AppUser(
           uid: user.uid,
           email: email,
-          displayName: '',
+          displayName: user.displayName ?? '',
           birthDate: birthDate,
           address: address);
     }
@@ -45,6 +47,7 @@ class AuthService {
   }
 
    Future<AppUser?> signInWithGoogle() async {
+    await _googleSignIn.signOut();
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     if (googleUser != null) {
       final GoogleSignInAuthentication googleAuth =
@@ -80,4 +83,47 @@ class AuthService {
   Future<void> sendPasswordResetEmail(String email) async {
     await _auth.sendPasswordResetEmail(email: email);
   }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
+    await _googleSignIn.signOut();
+  }
+
+  Future<AppUser?> getUserProfile() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      DocumentSnapshot doc = await _db.collection('users').doc(user.uid).get();
+      if (doc.exists) {
+        return AppUser(
+          uid: doc['uid'],
+          email: doc['email'],
+          displayName: doc['displayName'] ?? '',
+          birthDate: doc['birthDate'] ?? '',
+          address: doc['address'] ?? '',
+        );
+      } else {
+        throw Exception('User profile not found');
+      }
+    } else {
+      throw Exception('User not logged in');
+    }
+  }
+
+  AppUser _userFromFirebase(User user) {
+    return AppUser(
+        uid: user.uid,
+        email: user.email!,
+        displayName: user.displayName ?? '',
+        birthDate: '',
+        address: '');
+  }
+
+  Future<void> updateUserProfile(AppUser user) async {
+    await _db.collection('users').doc(user.uid).update({
+      'displayName': user.displayName,
+      'birthDate': user.birthDate,
+      'address': user.address,
+    });
+  }
+  
 }

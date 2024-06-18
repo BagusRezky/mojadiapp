@@ -7,6 +7,7 @@ import 'package:mojadiapp/screens/auth/register.dart';
 import 'package:mojadiapp/screens/home.dart';
 import 'package:mojadiapp/screens/onboarding/onboard.dart';
 import 'package:mojadiapp/screens/profile/profile.dart';
+import 'package:mojadiapp/screens/profile/update_profile.dart';
 import 'package:mojadiapp/screens/report/create_report.dart';
 import 'package:mojadiapp/screens/report/list_report.dart';
 import 'package:mojadiapp/screens/statistik/statistik.dart';
@@ -36,6 +37,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const Statistik());
       case '/profile':
         return MaterialPageRoute(builder: (_) => ProfileScreen());
+      case '/updateProfile':
+        return MaterialPageRoute(builder: (_) => UpdateProfileScreen());
       default:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
     }
