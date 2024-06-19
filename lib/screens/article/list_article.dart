@@ -65,7 +65,17 @@ class _ListArticleScreenState extends State<ListArticleScreen> {
           } else if (snapshot.hasError) {
             return const Center(child: Text('Terjadi kesalahan'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('Tidak ada laporan'));
+            return Center(
+              child: Column(
+                children: [
+                  Image.asset(
+                    'assets/no-data.png',
+                    height: 200, // Set the desired height
+                  ),
+                  const Text('Tidak ada artikel'),
+                ],
+              ),
+            );
           }
 
           List<Article> articles = snapshot.data!;

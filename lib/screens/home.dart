@@ -158,8 +158,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Text('Terjadi kesalahan'));
                             } else if (!snapshot.hasData ||
                                 snapshot.data!.isEmpty) {
-                              return const Center(
-                                  child: Text('Tidak ada laporan'));
+                              return Center(
+                                  child: Column(
+                                children: [
+                                  Image.asset(
+                                    'assets/no-data.png',
+                                    height: 200, // Set the desired height
+                                  ),
+                                  const Text('Tidak ada laporan'),
+                                ],
+                              ));
                             }
 
                             List<Report> reports = snapshot.data!;
@@ -241,8 +249,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Text('Terjadi kesalahan'));
                             } else if (!snapshot.hasData ||
                                 snapshot.data!.isEmpty) {
-                              return const Center(
-                                  child: Text('Tidak ada laporan'));
+                              return Center(
+                                  child: Column(
+                                children: [
+                                  Image.asset(
+                                    'assets/no-data.png',
+                                    height: 200, // Set the desired height
+                                  ),
+                                  const Text('Tidak ada artikel'),
+                                ],
+                              ));
                             }
 
                             List<Article> articles = snapshot.data!;

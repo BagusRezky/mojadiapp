@@ -51,7 +51,18 @@ class _ListReportScreenState extends State<ListReportScreen> {
               } else if (snapshot.hasError) {
                 return const Center(child: Text('Terjadi kesalahan'));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text('Tidak ada laporan'));
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/no-data.png',
+                        height: 200, // Set the desired height
+                      ),
+                      const Text('Tidak ada laporan'),
+                    ],
+                  ),
+                );
               }
 
               List<Report> reports = snapshot.data!;
