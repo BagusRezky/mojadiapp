@@ -31,10 +31,12 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
   String? _selectedCategory;
 
   final List<String> categories = [
-    'Pelanggaran Lingkungan',
-    'Kerusakan Fasilitas Sosial',
+    'Lingkungan Hidup',
+    'Kerusakan Fasilitas Publik',
     'Kerusakan Jalan',
     'Kerusakan Drainase',
+    'Keamanan dan Ketertiban',
+    'Lainnya'
   ];
 
   Future<void> _pickImage(ImageSource source) async {

@@ -5,6 +5,7 @@ import 'package:mojadiapp/pages/auth/login.dart';
 import 'package:mojadiapp/pages/auth/lupa_password.dart';
 import 'package:mojadiapp/pages/auth/register.dart';
 import 'package:mojadiapp/pages/home/home_page.dart';
+import 'package:mojadiapp/pages/home/info/info_list.dart';
 import 'package:mojadiapp/pages/onboarding/onboard.dart';
 import 'package:mojadiapp/pages/profile/profile_page.dart';
 import 'package:mojadiapp/pages/profile/profile_update_page.dart';
@@ -35,6 +36,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const CreateArticleScreen());
       case '/statistik':
         return MaterialPageRoute(builder: (_) => const Statistik());
+      case '/info':
+        return MaterialPageRoute(builder: (_) => const InfoListScreen());
       case '/profile':
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
       case '/updateProfile':

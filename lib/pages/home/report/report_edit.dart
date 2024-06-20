@@ -30,10 +30,12 @@ class _EditReportScreenState extends State<EditReportScreen> {
   final ImagePicker _picker = ImagePicker();
 
   final List<String> categories = [
-    'Pelanggaran Lingkungan',
-    'Kerusakan Fasilitas Sosial',
+    'Lingkungan Hidup',
+    'Kerusakan Fasilitas Publik',
     'Kerusakan Jalan',
     'Kerusakan Drainase',
+    'Keamanan dan Ketertiban',
+    'Lainnya'
   ];
 
   @override

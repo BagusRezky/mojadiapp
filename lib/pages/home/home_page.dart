@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             iconColor: const Color(0xFFF64A4A),
                             icon: Icons.info,
                             onTap: () {
-                              Navigator.pushNamed(context, '/report');
+                              Navigator.pushNamed(context, '/info');
                             },
                           ),
                         ],
