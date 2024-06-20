@@ -3,9 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:mojadiapp/models/report_model.dart';
-import 'package:mojadiapp/screens/report/detail_report.dart';
+import 'package:mojadiapp/pages/home/report/report_detail.dart';
 import 'package:mojadiapp/services/firebase_report_service.dart';
-import 'package:mojadiapp/screens/report/components/my_report_item.dart';
+import 'package:mojadiapp/pages/home/report/components/my_report_item.dart';
 
 class ListReportScreen extends StatefulWidget {
   const ListReportScreen({super.key});

@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mojadiapp/helper/color_styles.dart';
 import 'package:mojadiapp/models/report_model.dart';
-import 'package:mojadiapp/screens/report/components/content_detail_report.dart';
-import 'package:mojadiapp/screens/report/components/modal_status_update.dart';
-import 'package:mojadiapp/screens/report/components/popup_menu.dart';
+import 'package:mojadiapp/pages/home/report/components/content_detail_report.dart';
+import 'package:mojadiapp/pages/home/report/components/modal_status_update.dart';
+import 'package:mojadiapp/pages/home/report/components/popup_menu.dart';
 import 'package:mojadiapp/services/firebase_report_service.dart';
 import 'package:quickalert/quickalert.dart'; // Import the new widget
 

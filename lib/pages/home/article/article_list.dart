@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mojadiapp/models/article_model.dart';
-import 'package:mojadiapp/screens/article/components/card_article.dart';
+import 'package:mojadiapp/pages/home/article/components/card_article.dart';
 import 'package:mojadiapp/services/firebase_article_service.dart';
 
 class ListArticleScreen extends StatefulWidget {

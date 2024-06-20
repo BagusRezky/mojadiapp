@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mojadiapp/models/report_model.dart';
-import 'package:mojadiapp/screens/report/edit_report.dart';
+import 'package:mojadiapp/pages/home/report/report_edit.dart';
 import 'package:quickalert/quickalert.dart';
 
 class ReportPopupMenu extends StatelessWidget {

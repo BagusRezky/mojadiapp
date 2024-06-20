@@ -3,15 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mojadiapp/helper/color_styles.dart';
 import 'package:mojadiapp/models/article_model.dart';
-import 'package:mojadiapp/screens/article/components/card_article.home.dart';
-import 'package:mojadiapp/screens/report/detail_report.dart';
+import 'package:mojadiapp/pages/home/article/components/card_article.home.dart';
+import 'package:mojadiapp/pages/home/report/report_detail.dart';
 import 'package:mojadiapp/services/firebase_article_service.dart';
 import 'package:mojadiapp/widgets/my_menu.dart';
 import 'package:mojadiapp/services/firebase_report_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mojadiapp/models/report_model.dart';
-import 'package:mojadiapp/screens/report/components/my_report_card.dart';
-import 'package:mojadiapp/screens/report/components/my_report_item.dart';
+import 'package:mojadiapp/pages/home/report/components/my_report_card.dart';
+import 'package:mojadiapp/pages/home/report/components/my_report_item.dart';
 import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
