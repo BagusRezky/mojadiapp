@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:mojadiapp/models/article_model.dart';
-import 'package:mojadiapp/screens/article/detail_article.dart';
+import 'package:mojadiapp/pages/home/article/article_detail.dart';
 
 class ArticleCard extends StatelessWidget {
   final Article article;

@@ -3,15 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mojadiapp/helper/color_styles.dart';
 import 'package:mojadiapp/models/article_model.dart';
-import 'package:mojadiapp/screens/article/components/card_article.home.dart';
-import 'package:mojadiapp/screens/report/detail_report.dart';
+import 'package:mojadiapp/pages/home/article/components/card_article.home.dart';
+import 'package:mojadiapp/pages/home/report/report_detail.dart';
 import 'package:mojadiapp/services/firebase_article_service.dart';
 import 'package:mojadiapp/widgets/my_menu.dart';
 import 'package:mojadiapp/services/firebase_report_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mojadiapp/models/report_model.dart';
-import 'package:mojadiapp/screens/report/components/my_report_card.dart';
-import 'package:mojadiapp/screens/report/components/my_report_item.dart';
+import 'package:mojadiapp/pages/home/report/components/my_report_card.dart';
+import 'package:mojadiapp/pages/home/report/components/my_report_item.dart';
 import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             iconColor: const Color(0xFFF64A4A),
                             icon: Icons.info,
                             onTap: () {
-                              Navigator.pushNamed(context, '/report');
+                              Navigator.pushNamed(context, '/info');
                             },
                           ),
                         ],
@@ -158,8 +158,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Text('Terjadi kesalahan'));
                             } else if (!snapshot.hasData ||
                                 snapshot.data!.isEmpty) {
-                              return const Center(
-                                  child: Text('Tidak ada laporan'));
+                              return Center(
+                                  child: Column(
+                                children: [
+                                  Image.asset(
+                                    'assets/no-data.png',
+                                    height: 200, // Set the desired height
+                                  ),
+                                  const Text('Tidak ada laporan'),
+                                ],
+                              ));
                             }
 
                             List<Report> reports = snapshot.data!;
@@ -241,8 +249,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Text('Terjadi kesalahan'));
                             } else if (!snapshot.hasData ||
                                 snapshot.data!.isEmpty) {
-                              return const Center(
-                                  child: Text('Tidak ada laporan'));
+                              return Center(
+                                  child: Column(
+                                children: [
+                                  Image.asset(
+                                    'assets/no-data.png',
+                                    height: 200, // Set the desired height
+                                  ),
+                                  const Text('Tidak ada artikel'),
+                                ],
+                              ));
                             }
 
                             List<Article> articles = snapshot.data!;

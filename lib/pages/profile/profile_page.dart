@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:mojadiapp/providers/auth_provider.dart';
-import 'package:mojadiapp/screens/profile/update_profile.dart';
 import 'package:provider/provider.dart';
-
 
 const String tProfileImage = "assets/male.png";
 
 class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -23,13 +23,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
     if (index == 0) {
       Navigator.pushNamed(context, '/home');
-    } 
+    }
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
-      
       builder: (context, authProvider, child) {
         var userProfile = authProvider.user;
 
@@ -98,9 +97,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.pushNamed(
-                                context, '/updateProfile', 
-                                );
-                              
+                                context,
+                                '/updateProfile',
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
@@ -165,19 +164,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildProfileField(
       {required IconData icon, required String label, required String value}) {
     return TextFormField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(100),
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(100),
+          ),
+          labelText: label,
+          prefixIcon: Icon(icon),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(100),
+            borderSide: const BorderSide(width: 2, color: Colors.black),
+          ),
         ),
-        labelText: label,
-        prefixIcon: Icon(icon),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(100),
-          borderSide: const BorderSide(width: 2, color: Colors.black),
-        ),
-      ),
-      readOnly: true,
-      initialValue: value.isNotEmpty ? value : 'Not provided'
-    );
+        readOnly: true,
+        initialValue: value.isNotEmpty ? value : 'Not provided');
   }
 }

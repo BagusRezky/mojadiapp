@@ -1,6 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mojadiapp/models/report_model.dart';
@@ -13,29 +10,43 @@ import 'dart:io';
 
 import 'package:quickalert/quickalert.dart';
 
-class CreateReportScreen extends StatefulWidget {
-  const CreateReportScreen({super.key});
+class EditReportScreen extends StatefulWidget {
+  final Report report;
+
+  const EditReportScreen({super.key, required this.report});
 
   @override
-  State<CreateReportScreen> createState() => _CreateReportScreenState();
+  State<EditReportScreen> createState() => _EditReportScreenState();
 }
 
-class _CreateReportScreenState extends State<CreateReportScreen> {
+class _EditReportScreenState extends State<EditReportScreen> {
   // controller
   final TextEditingController _judulController = TextEditingController();
   final TextEditingController _deskripsiController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _lokasiController = TextEditingController();
+  final TextEditingController _kategoryController = TextEditingController();
   File? _image;
   final ImagePicker _picker = ImagePicker();
-  String? _selectedCategory;
 
   final List<String> categories = [
-    'Pelanggaran Lingkungan',
-    'Kerusakan Fasilitas Sosial',
+    'Lingkungan Hidup',
+    'Kerusakan Fasilitas Publik',
     'Kerusakan Jalan',
     'Kerusakan Drainase',
+    'Keamanan dan Ketertiban',
+    'Lainnya'
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _judulController.text = widget.report.judul;
+    _deskripsiController.text = widget.report.deskripsi;
+    _dateController.text = widget.report.tanggal;
+    _lokasiController.text = widget.report.lokasi;
+    _kategoryController.text = widget.report.kategori;
+  }
 
   Future<void> _pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
@@ -49,7 +60,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
   Future<void> _selectedDate() async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: DateTime.parse(_dateController.text),
       firstDate: DateTime(2015, 8),
       lastDate: DateTime.now(),
     );
@@ -60,13 +71,12 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
     }
   }
 
-  Future<void> _uploadData() async {
-    if (_image == null ||
-        _judulController.text.isEmpty ||
+  Future<void> _updateData() async {
+    if (_judulController.text.isEmpty ||
         _deskripsiController.text.isEmpty ||
         _dateController.text.isEmpty ||
         _lokasiController.text.isEmpty ||
-        _selectedCategory == null) {
+        _kategoryController.text.isEmpty) {
       QuickAlert.show(
         context: context,
         type: QuickAlertType.error,
@@ -88,40 +98,25 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
     );
 
     try {
-      String imageUrl = await FirebaseReportService().uploadImage(_image!);
-      final user = FirebaseAuth.instance.currentUser;
-      String userEmail = user!.email!;
+      String imageUrl = widget.report.imageUrl;
+      if (_image != null) {
+        imageUrl = await FirebaseReportService().uploadImage(_image!);
+      }
 
-      Report report = Report(
-        id: '',
+      Report updatedReport = Report(
+        id: widget.report.id,
         judul: _judulController.text,
         deskripsi: _deskripsiController.text,
         tanggal: _dateController.text,
         lokasi: _lokasiController.text,
-        kategori: _selectedCategory!,
+        kategori: _kategoryController.text,
         imageUrl: imageUrl,
-        userEmail: userEmail,
-        statusList: [
-          {
-            'status': 'Belum Selesai',
-            'deskripsi': 'Laporan belum dikerjakan',
-            'timestamp':
-                Timestamp.now(), // Menambahkan timestamp ke status awal
-          }
-        ], // Status awal
-        timestamp: Timestamp.now(),
+        userEmail: widget.report.userEmail,
+        statusList: widget.report.statusList,
+        timestamp: widget.report.timestamp,
       );
 
-      await FirebaseReportService().createReport(report);
-
-      setState(() {
-        _image = null;
-        _judulController.clear();
-        _deskripsiController.clear();
-        _dateController.clear();
-        _lokasiController.clear();
-        _selectedCategory = null;
-      });
+      await FirebaseReportService().updateReport(updatedReport);
 
       // Close loading indicator
       Navigator.pop(context);
@@ -130,7 +125,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
         context: context,
         type: QuickAlertType.success,
         title: 'Berhasil',
-        text: 'Laporan berhasil dibuat',
+        text: 'Laporan berhasil diperbarui',
         onConfirmBtnTap: () {
           Navigator.pop(context);
           Navigator.pop(context);
@@ -144,7 +139,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
         context: context,
         type: QuickAlertType.error,
         title: 'Error',
-        text: 'Terjadi kesalahan saat membuat laporan',
+        text: 'Terjadi kesalahan saat memperbarui laporan',
       );
     }
   }
@@ -154,7 +149,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Buat Laporan',
+          'Edit Laporan',
           style: GoogleFonts.roboto(
               fontWeight: FontWeight.w600, fontSize: 24.sp, height: 36.sp),
         ),
@@ -179,33 +174,30 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                         decoration: BoxDecoration(
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(5),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 1,
-                              blurRadius: 2,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                          // border: Border.all(color: Colors.black),
+                          border: Border.all(color: Colors.black),
                         ),
                         child: _image == null
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.camera_alt,
-                                      color: Colors.grey[800]),
-                                  5.verticalSpace,
-                                  Text(
-                                    'Upload Image',
-                                    style: GoogleFonts.roboto(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12.sp,
-                                      color: Colors.grey[800],
-                                    ),
-                                  ),
-                                ],
-                              )
+                            ? widget.report.imageUrl.isEmpty
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.camera_alt,
+                                          color: Colors.grey[800]),
+                                      5.verticalSpace,
+                                      Text(
+                                        'Upload Image',
+                                        style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12.sp,
+                                          color: Colors.grey[800],
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Image.network(
+                                    widget.report.imageUrl,
+                                    fit: BoxFit.cover,
+                                  )
                             : Image.file(
                                 _image!,
                                 fit: BoxFit.cover,
@@ -322,14 +314,15 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                                 child: Text(value),
                               ))
                           .toList(),
+                      value: _kategoryController.text,
                       onChanged: (String? value) {
                         setState(() {
-                          _selectedCategory = value;
+                          _kategoryController.text = value!;
                         });
                       },
                     ),
                     20.verticalSpace,
-                    MyButton(text: 'Buat Laporan', onPressed: _uploadData),
+                    MyButton(text: 'Update Laporan', onPressed: _updateData),
                   ],
                 ),
               ),

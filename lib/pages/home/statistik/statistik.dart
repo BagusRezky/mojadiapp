@@ -93,6 +93,7 @@ class _StatistikState extends State<Statistik> {
         elevation: 0,
         centerTitle: true,
       ),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(35.0),
         child: Column(
@@ -141,7 +142,7 @@ class _StatistikState extends State<Statistik> {
             Expanded(
               child: selectedYear == '2024'
                   ? _buildBarChart()
-                  : Center(
+                  : const Center(
                       child: Text(
                         "Belum ada grafik untuk tahun yang dipilih",
                         style: TextStyle(fontSize: 16),
