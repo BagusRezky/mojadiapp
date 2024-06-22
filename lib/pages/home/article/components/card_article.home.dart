@@ -28,7 +28,7 @@ class _ArticleCardHomeState extends State<ArticleCardHome> {
         color: const Color.fromARGB(101, 206, 234, 255),
         borderRadius: BorderRadius.circular(11),
         border: Border.all(
-          width: 1.5.sp,
+          width: 1.5.w,
           color: const Color.fromARGB(255, 144, 201, 248),
         ),
       ),
@@ -36,10 +36,10 @@ class _ArticleCardHomeState extends State<ArticleCardHome> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(10.sp),
+            borderRadius: BorderRadius.circular(10),
             child: Container(
               width: double.infinity,
-              height: 102.h,
+              height: 100.h,
               decoration: const BoxDecoration(
                 color: Colors.grey,
               ),
