@@ -46,7 +46,7 @@ class AuthService {
     return null;
   }
 
-   Future<AppUser?> signInWithGoogle() async {
+  Future<AppUser?> signInWithGoogle() async {
     await _googleSignIn.signOut();
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     if (googleUser != null) {
@@ -125,5 +125,4 @@ class AuthService {
       'address': user.address,
     });
   }
-  
 }

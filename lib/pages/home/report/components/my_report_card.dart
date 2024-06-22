@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ReportCard extends StatelessWidget {
@@ -18,17 +19,17 @@ class ReportCard extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          const Opacity(
+          Opacity(
             opacity: 0.5,
             child: Image(
-              image: AssetImage('assets/cover-card.png'),
-              height: 180,
+              image: const AssetImage('assets/cover-card.png'),
+              height: 180.h,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
           ),
           Container(
-            height: 180,
+            height: 180.h,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.centerRight,
@@ -49,35 +50,35 @@ class ReportCard extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 16,
-            right: 30,
-            left: 16,
+            top: 16.h,
+            right: 30.w,
+            left: 16.w,
             child: Text(
               'Yuk, laporkan temuaan pelanggaran & kerusakan fasilitas sosial',
               style: GoogleFonts.roboto(
                 fontWeight: FontWeight.normal,
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 18.sp,
               ),
             ),
           ),
           Positioned(
-            top: 70,
-            right: 30,
-            left: 16,
+            top: 85.h,
+            right: 30.w,
+            left: 16.w,
             child: Text(
               'di Lingkungan Sekitarmu!',
               style: GoogleFonts.roboto(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 18.sp,
               ),
             ),
           ),
           Positioned(
-            bottom: 16,
-            right: 16,
-            width: 140,
+            bottom: 16.h,
+            right: 16.w,
+            width: 140.w,
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/report/create');
@@ -92,7 +93,7 @@ class ReportCard extends StatelessWidget {
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.bold,
                   color: const Color(0xFF0E47A1),
-                  fontSize: 14,
+                  fontSize: 14.sp,
                 ),
               ),
             ),
