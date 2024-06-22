@@ -35,23 +35,23 @@ class InfoListScreen extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       padding: const EdgeInsets.all(8),
-                      child: const Icon(
+                      child: Icon(
                         Icons.fire_truck,
-                        size: 38,
+                        size: 34.sp,
                         color: Colors.deepOrange,
                       ),
                     ),
                     8.verticalSpace,
-                    const Text(
+                    Text(
                       "Pemadam Kebakaran",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 12.sp, fontWeight: FontWeight.bold),
                     ),
                     4.verticalSpace,
-                    const Text(
+                    Text(
                       "113",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -72,23 +72,23 @@ class InfoListScreen extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       padding: const EdgeInsets.all(8),
-                      child: const Icon(
+                      child: Icon(
                         Icons.local_police_rounded,
-                        size: 38,
+                        size: 34.sp,
                         color: Colors.red,
                       ),
                     ),
                     8.verticalSpace,
-                    const Text(
+                    Text(
                       "Polisi",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 12.sp, fontWeight: FontWeight.bold),
                     ),
                     4.verticalSpace,
-                    const Text(
+                    Text(
                       "110",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -109,23 +109,23 @@ class InfoListScreen extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       padding: const EdgeInsets.all(8),
-                      child: const Icon(
+                      child: Icon(
                         Icons.local_hospital,
-                        size: 38,
+                        size: 34.sp,
                         color: Colors.green,
                       ),
                     ),
                     8.verticalSpace,
-                    const Text(
+                    Text(
                       "Dinas Lingkungan Hidup",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 12.sp, fontWeight: FontWeight.bold),
                     ),
                     4.verticalSpace,
-                    const Text(
+                    Text(
                       "(0274) 868316",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -146,23 +146,23 @@ class InfoListScreen extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       padding: const EdgeInsets.all(8),
-                      child: const Icon(
+                      child: Icon(
                         Icons.delete,
-                        size: 38,
+                        size: 34.sp,
                         color: Colors.blue,
                       ),
                     ),
                     8.verticalSpace,
-                    const Text(
+                    Text(
                       "Petugas Sampah",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 12.sp, fontWeight: FontWeight.bold),
                     ),
                     4.verticalSpace,
-                    const Text(
+                    Text(
                       "(0274) 768356",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

@@ -35,6 +35,28 @@ class FirebaseReportService {
     }
   }
 
+  Future<List<Report>> fetchFilteredReports(
+      {String? searchQuery, String? category}) async {
+    Query query =
+        _db.collection('reports').orderBy('timestamp', descending: true);
+
+    if (searchQuery != null && searchQuery.isNotEmpty) {
+      query = query
+          .where('judul', isGreaterThanOrEqualTo: searchQuery)
+          .where('judul', isLessThanOrEqualTo: '$searchQuery\uf8ff');
+    }
+
+    if (category != null && category.isNotEmpty) {
+      query = query.where('kategori', isEqualTo: category);
+    }
+
+    QuerySnapshot snapshot = await query.get();
+    return snapshot.docs
+        .map(
+            (doc) => Report.fromMap(doc.data() as Map<String, dynamic>, doc.id))
+        .toList();
+  }
+
   Future<void> updateReport(Report report) async {
     DocumentReference reportRef = _db.collection('reports').doc(report.id);
     DocumentSnapshot reportSnapshot = await reportRef.get();
