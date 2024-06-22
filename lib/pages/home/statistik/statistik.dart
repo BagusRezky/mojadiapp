@@ -172,14 +172,18 @@ class _StatistikState extends State<Statistik> {
 
   Color _getColorForCategory(String category) {
     switch (category) {
-      case 'Pelanggaran Lingkungan':
+      case 'Lingkungan Hidup':
         return Colors.blue;
-      case 'Kerusakan Fasilitas Sosial':
+      case 'Kerusakan Fasilitas Publik':
         return Colors.green;
       case 'Kerusakan Jalan':
         return Colors.orange;
       case 'Kerusakan Drainase':
         return Colors.grey;
+      case 'Keamanan dan Ketertiban':
+        return Colors.pink;
+      case 'Lainnya':
+        return Colors.purple;
       default:
         return Colors.black;
     }
@@ -228,34 +232,13 @@ class _StatistikState extends State<Statistik> {
             sideTitles: SideTitles(
               showTitles: true,
               getTitlesWidget: (double value, TitleMeta meta) {
-                switch (value.toInt()) {
-                  case 1:
-                    return Text('Jan');
-                  case 2:
-                    return Text('Feb');
-                  case 3:
-                    return Text('Mar');
-                  case 4:
-                    return Text('Apr');
-                  case 5:
-                    return Text('May');
-                  case 6:
-                    return Text('Jun');
-                  case 7:
-                    return Text('Jul');
-                  case 8:
-                    return Text('Aug');
-                  case 9:
-                    return Text('Sep');
-                  case 10:
-                    return Text('Oct');
-                  case 11:
-                    return Text('Nov');
-                  case 12:
-                    return Text('Dec');
-                  default:
-                    return Text('');
-                }
+                return SideTitleWidget(
+                  axisSide: meta.axisSide,
+                  child: Text(
+                    _getMonthName(value.toInt()),
+                    style: TextStyle(fontSize: 10),
+                  ),
+                );
               },
             ),
           ),
@@ -275,25 +258,63 @@ class _StatistikState extends State<Statistik> {
     );
   }
 
+  String _getMonthName(int month) {
+    switch (month) {
+      case 1:
+        return 'Jan';
+      case 2:
+        return 'Feb';
+      case 3:
+        return 'Mar';
+      case 4:
+        return 'Apr';
+      case 5:
+        return 'May';
+      case 6:
+        return 'Jun';
+      case 7:
+        return 'Jul';
+      case 8:
+        return 'Aug';
+      case 9:
+        return 'Sep';
+      case 10:
+        return 'Oct';
+      case 11:
+        return 'Nov';
+      case 12:
+        return 'Dec';
+      default:
+        return '';
+    }
+  }
+
   List<BarChartGroupData> _buildBarGroups() {
-    return monthlyCounts.entries.map((entry) {
-      int month = entry.key;
-      Map<String, int> counts = entry.value;
+    List<int> months = List<int>.generate(12, (i) => i + 1);
+    return months.map((month) {
+      Map<String, int> counts = monthlyCounts[month] ?? {
+        'Belum Selesai': 0,
+        'Proses': 0,
+        'Selesai': 0,
+      };
 
       return BarChartGroupData(
         x: month,
         barRods: [
           BarChartRodData(
-            toY: counts['Belum Mulai']?.toDouble() ?? 0,
+            toY: counts['Belum Selesai']?.toDouble() ?? 0,
             color: Colors.red,
+            width: 4, 
           ),
           BarChartRodData(
             toY: counts['Proses']?.toDouble() ?? 0,
             color: Colors.yellow,
+            width: 4, 
           ),
           BarChartRodData(
             toY: counts['Selesai']?.toDouble() ?? 0,
             color: Colors.green,
+            width: 4, 
           ),
         ],
       );
