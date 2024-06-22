@@ -33,14 +33,6 @@ class ReportDetailContent extends StatelessWidget {
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                report.deskripsi,
-                style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14.sp,
-                ),
-              ),
-              12.verticalSpace,
               for (var status in report.statusList)
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),

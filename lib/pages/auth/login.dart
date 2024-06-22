@@ -14,12 +14,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    // final authProvider = Provider.of<AuthProvider>(context);
-    // final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
     return Scaffold(
       backgroundColor: const Color(0xFF1564C0),
       body: Container(
@@ -176,27 +174,30 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 10.verticalSpace,
-                SizedBox(
-                  width: 215.w,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      Provider.of<AuthProvider>(context, listen: false)
-                          .signInWithGoogle(context);
-                    },
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: const Color(0xff000000),
-                    ),
+                OutlinedButton(
+                  onPressed: () {
+                    Provider.of<AuthProvider>(context, listen: false)
+                        .signInWithGoogle(context);
+                  },
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
-                          Icons.g_mobiledata_rounded,
-                          color: Colors.red,
+                        Image(
+                          image: const AssetImage('assets/g_icon.png'),
+                          width: 20.w,
+                          height: 20.h,
+                          fit: BoxFit.cover,
                         ),
                         5.horizontalSpace,
                         Text(
                           'Login dengan Google',
                           style: GoogleFonts.roboto(
-                            color: const Color(0xFFFFFFFF),
+                            color: const Color(0xFF1564C0),
                             fontWeight: FontWeight.w400,
                             fontStyle: FontStyle.normal,
                             fontSize: 14.sp,

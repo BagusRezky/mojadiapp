@@ -41,7 +41,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF1564C0),
+      backgroundColor: const Color(0xFF1564C0),
       body: Container(
         margin: EdgeInsets.symmetric(vertical: 70.h, horizontal: 20.h),
         width: MediaQuery.of(context).size.width,
