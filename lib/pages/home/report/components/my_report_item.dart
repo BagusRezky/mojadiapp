@@ -75,6 +75,8 @@ class ReportItem extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: 12.sp,
                           ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         10.verticalSpace,
                         Text(
@@ -84,6 +86,8 @@ class ReportItem extends StatelessWidget {
                             fontSize: 12.sp,
                             color: Colors.grey,
                           ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
