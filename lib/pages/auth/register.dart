@@ -56,8 +56,23 @@ class _RegisterState extends State<Register> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Image.asset('assets/logo.png', width: 200.w, height: 200.h, fit: BoxFit.cover),
-                15.verticalSpace,
+                Image(
+                  image: const AssetImage('assets/1.png'),
+                  width: 150.w,
+                  height: 150.h,
+                  fit: BoxFit.cover,
+                ),
+                Text(
+                  'CitiCare',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.roboto(
+                    color: const Color(0xFF4D8ACC),
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.normal,
+                    fontSize: 24.sp,
+                  ),
+                ),
+                20.verticalSpace,
                 TextInputField(
                   hintText: 'Email',
                   labelText: 'Email',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mojadiapp/models/report_model.dart';
 import 'package:mojadiapp/pages/home/report/report_edit.dart';
 import 'package:quickalert/quickalert.dart';
@@ -32,12 +33,30 @@ class ReportPopupMenu extends StatelessWidget {
     onDelete();
   }
 
+  void _showNotAuthorizedAlert(BuildContext context) {
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      title: 'Tidak Diizinkan',
+      text: 'Anda tidak diizinkan untuk melakukan aksi ini.',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+
+    // Periksa apakah pengguna sedang login sama dengan pembuat laporan berdasarkan email
+    bool isOwner = user != null && user.email == report.userEmail;
+
     return PopupMenuButton<String>(
       color: Colors.white,
       icon: const Icon(Icons.more_vert, color: Colors.black),
       onSelected: (String result) {
+        if (!isOwner) {
+          _showNotAuthorizedAlert(context);
+          return;
+        }
         switch (result) {
           case 'Update Status':
             _showUpdateStatusAlert(context);
@@ -55,20 +74,22 @@ class ReportPopupMenu extends StatelessWidget {
             break;
         }
       },
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-        const PopupMenuItem<String>(
-          value: 'Update Status',
-          child: Text('Update Status'),
-        ),
-        const PopupMenuItem<String>(
-          value: 'Edit Laporan',
-          child: Text('Edit Laporan'),
-        ),
-        const PopupMenuItem<String>(
-          value: 'Delete Laporan',
-          child: Text('Delete Laporan'),
-        ),
-      ],
+      itemBuilder: (BuildContext context) {
+        return <PopupMenuEntry<String>>[
+          const PopupMenuItem<String>(
+            value: 'Update Status',
+            child: Text('Update Status'),
+          ),
+          const PopupMenuItem<String>(
+            value: 'Edit Laporan',
+            child: Text('Edit Laporan'),
+          ),
+          const PopupMenuItem<String>(
+            value: 'Delete Laporan',
+            child: Text('Delete Laporan'),
+          ),
+        ];
+      },
     );
   }
 }

@@ -23,13 +23,13 @@ class ReportCard extends StatelessWidget {
             opacity: 0.5,
             child: Image(
               image: const AssetImage('assets/cover-card.png'),
-              height: 180.h,
+              height: 140.h,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
           ),
           Container(
-            height: 180.h,
+            height: 140.h,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.centerRight,
@@ -51,19 +51,19 @@ class ReportCard extends StatelessWidget {
           ),
           Positioned(
             top: 16.h,
-            right: 30.w,
+            right: 50.w,
             left: 16.w,
             child: Text(
               'Yuk, laporkan temuaan pelanggaran & kerusakan fasilitas sosial',
               style: GoogleFonts.roboto(
                 fontWeight: FontWeight.normal,
                 color: Colors.white,
-                fontSize: 18.sp,
+                fontSize: 15.sp,
               ),
             ),
           ),
           Positioned(
-            top: 85.h,
+            top: 55.h,
             right: 30.w,
             left: 16.w,
             child: Text(
@@ -71,12 +71,12 @@ class ReportCard extends StatelessWidget {
               style: GoogleFonts.roboto(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
-                fontSize: 18.sp,
+                fontSize: 16.sp,
               ),
             ),
           ),
           Positioned(
-            bottom: 16.h,
+            bottom: 12.h,
             right: 16.w,
             width: 140.w,
             child: ElevatedButton(

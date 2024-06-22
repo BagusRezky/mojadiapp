@@ -74,6 +74,8 @@ class ArticleCard extends StatelessWidget {
               fontSize: 14.sp,
               color: Colors.black,
             ),
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

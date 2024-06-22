@@ -24,15 +24,15 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: const Color(0xFF1564C0),
       body: Container(
         margin: EdgeInsets.symmetric(vertical: 70.h, horizontal: 20.h),
-        // width: MediaQuery.of(context).size.width,
-        // height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           color: const Color(0xffffffff),
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(16.h),
         ),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(25.h, 5.h, 25.h, 15.h),
+          padding: EdgeInsets.fromLTRB(25.h, 5.h, 25.h, 25.h),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -40,10 +40,20 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Image(
-                  image: const AssetImage('assets/logo.png'),
+                  image: const AssetImage('assets/1.png'),
                   width: 150.w,
                   height: 150.h,
                   fit: BoxFit.cover,
+                ),
+                Text(
+                  'CitiCare',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.roboto(
+                    color: const Color(0xFF4D8ACC),
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.normal,
+                    fontSize: 24.sp,
+                  ),
                 ),
                 20.verticalSpace,
                 TextInputField(

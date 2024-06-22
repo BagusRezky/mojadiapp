@@ -15,12 +15,26 @@ class _StatistikState extends State<Statistik> {
   String selectedYear = '2024';
   Map<String, double> categoryData = {};
   Map<int, Map<String, int>> monthlyCounts = {};
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _fetchPieChartData();
-    _fetchBarChartData();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    // Fetch data
+    await _fetchPieChartData();
+    await _fetchBarChartData();
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future<void> _fetchPieChartData() async {
@@ -56,19 +70,27 @@ class _StatistikState extends State<Statistik> {
 
       if (doc['status_list'] is List<dynamic>) {
         List<dynamic> statusList = doc['status_list'];
-        for (var status in statusList) {
-          if (status is Map<String, dynamic> && status.containsKey('status')) {
-            String statusValue = status['status'];
-            if (!monthlyCounts.containsKey(month)) {
-              monthlyCounts[month] = {
-                'Belum Mulai': 0,
-                'Proses': 0,
-                'Selesai': 0
-              };
-            }
-            monthlyCounts[month]![statusValue] =
-                (monthlyCounts[month]![statusValue] ?? 0) + 1;
+
+        statusList.sort((a, b) {
+          DateTime timeA = (a['timestamp'] as Timestamp).toDate();
+          DateTime timeB = (b['timestamp'] as Timestamp).toDate();
+          return timeA.compareTo(timeB);
+        });
+
+        // Mengambil status terakhir setelah diurutkan
+        var lastStatus = statusList.last;
+        if (lastStatus is Map<String, dynamic> &&
+            lastStatus.containsKey('status')) {
+          String statusValue = lastStatus['status'];
+          if (!monthlyCounts.containsKey(month)) {
+            monthlyCounts[month] = {
+              'Belum Selesai': 0,
+              'Proses': 0,
+              'Selesai': 0
+            };
           }
+          monthlyCounts[month]![statusValue] =
+              (monthlyCounts[month]![statusValue] ?? 0) + 1;
         }
       }
     }
@@ -86,7 +108,7 @@ class _StatistikState extends State<Statistik> {
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
             fontSize: 24.sp,
-            height: 1.5,
+            height: 1.5.h,
           ),
         ),
         backgroundColor: Colors.white,
@@ -95,62 +117,70 @@ class _StatistikState extends State<Statistik> {
       ),
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.all(35.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 180,
-                  height: 150,
-                  child: AspectRatio(
-                    aspectRatio: 1.2,
-                    child: PieChart(
-                      PieChartData(
-                        sections: _buildSections(),
-                        borderData: FlBorderData(show: false),
-                        sectionsSpace: 3,
-                        centerSpaceRadius: 50,
+        padding: const EdgeInsets.all(20),
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  16.verticalSpace,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 160.w,
+                        height: 130.h,
+                        child: AspectRatio(
+                          aspectRatio: 1.2,
+                          child: PieChart(
+                            PieChartData(
+                              sections: _buildSections(),
+                              borderData: FlBorderData(show: false),
+                              sectionsSpace: 3,
+                              centerSpaceRadius: 50,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      16.horizontalSpace,
+                      _buildLegend(),
+                    ],
                   ),
-                ),
-                const SizedBox(width: 20),
-                _buildLegend(),
-              ],
-            ),
-            const SizedBox(height: 30),
-            DropdownButton<String>(
-              value: selectedYear,
-              items: <String>['2024', '2025', '2026']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text('Tahun: $value'),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedYear = newValue!;
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: selectedYear == '2024'
-                  ? _buildBarChart()
-                  : const Center(
-                      child: Text(
-                        "Belum ada grafik untuk tahun yang dipilih",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-            ),
-          ],
-        ),
+                  20.verticalSpace,
+                  DropdownButton<String>(
+                    value: selectedYear,
+                    items: <String>['2024', '2025', '2026']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text('Tahun: $value'),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedYear = newValue!;
+                      });
+                    },
+                  ),
+                  20.verticalSpace,
+                  Expanded(
+                    child: selectedYear == '2024'
+                        ? Column(
+                            children: [
+                              Expanded(child: _buildBarChart()),
+                              10.verticalSpace,
+                              _buildBarChartLegend(),
+                            ],
+                          )
+                        : Center(
+                            child: Text(
+                              "Belum ada grafik untuk tahun yang dipilih",
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ),
+                  ),
+                ],
+              ),
       ),
     );
   }
@@ -160,11 +190,11 @@ class _StatistikState extends State<Statistik> {
       return PieChartSectionData(
         value: entry.value,
         color: _getColorForCategory(entry.key),
-        title: '${entry.value.toStringAsFixed(1)}%',
+        title: '${entry.value.toStringAsFixed(0)}%',
         titleStyle: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 16,
+          fontSize: 12.sp,
         ),
       );
     }).toList();
@@ -172,14 +202,16 @@ class _StatistikState extends State<Statistik> {
 
   Color _getColorForCategory(String category) {
     switch (category) {
-      case 'Pelanggaran Lingkungan':
-        return Colors.blue;
-      case 'Kerusakan Fasilitas Sosial':
+      case 'Lingkungan Hidup':
         return Colors.green;
+      case 'Kerusakan Fasilitas Publik':
+        return Colors.blue;
       case 'Kerusakan Jalan':
         return Colors.orange;
       case 'Kerusakan Drainase':
         return Colors.grey;
+      case 'Keamanan dan Ketertiban':
+        return Colors.purple;
       default:
         return Colors.black;
     }
@@ -195,21 +227,21 @@ class _StatistikState extends State<Statistik> {
 
   Widget _buildLegendItem(Color color, String title) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: EdgeInsets.symmetric(vertical: 2.0.h),
       child: Row(
         children: [
           Container(
-            width: 10,
-            height: 14,
+            width: 10.w,
+            height: 14.h,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: color,
             ),
           ),
-          const SizedBox(width: 8),
+          8.horizontalSpace,
           Text(
             title,
-            style: TextStyle(fontSize: 10),
+            style: TextStyle(fontSize: 10.sp),
           ),
         ],
       ),
@@ -228,34 +260,13 @@ class _StatistikState extends State<Statistik> {
             sideTitles: SideTitles(
               showTitles: true,
               getTitlesWidget: (double value, TitleMeta meta) {
-                switch (value.toInt()) {
-                  case 1:
-                    return Text('Jan');
-                  case 2:
-                    return Text('Feb');
-                  case 3:
-                    return Text('Mar');
-                  case 4:
-                    return Text('Apr');
-                  case 5:
-                    return Text('May');
-                  case 6:
-                    return Text('Jun');
-                  case 7:
-                    return Text('Jul');
-                  case 8:
-                    return Text('Aug');
-                  case 9:
-                    return Text('Sep');
-                  case 10:
-                    return Text('Oct');
-                  case 11:
-                    return Text('Nov');
-                  case 12:
-                    return Text('Dec');
-                  default:
-                    return Text('');
-                }
+                return SideTitleWidget(
+                  axisSide: meta.axisSide,
+                  child: Text(
+                    _getMonthName(value.toInt()),
+                    style: TextStyle(fontSize: 10.sp),
+                  ),
+                );
               },
             ),
           ),
@@ -275,28 +286,78 @@ class _StatistikState extends State<Statistik> {
     );
   }
 
-  List<BarChartGroupData> _buildBarGroups() {
-    return monthlyCounts.entries.map((entry) {
-      int month = entry.key;
-      Map<String, int> counts = entry.value;
+  String _getMonthName(int month) {
+    switch (month) {
+      case 1:
+        return 'Jan';
+      case 2:
+        return 'Feb';
+      case 3:
+        return 'Mar';
+      case 4:
+        return 'Apr';
+      case 5:
+        return 'May';
+      case 6:
+        return 'Jun';
+      case 7:
+        return 'Jul';
+      case 8:
+        return 'Aug';
+      case 9:
+        return 'Sep';
+      case 10:
+        return 'Oct';
+      case 11:
+        return 'Nov';
+      case 12:
+        return 'Dec';
+      default:
+        return '';
+    }
+  }
 
+  List<BarChartGroupData> _buildBarGroups() {
+    return List.generate(12, (index) {
+      int month = index + 1;
+      Map<String, int> counts = monthlyCounts[month] ??
+          {'Belum Selesai': 0, 'Proses': 0, 'Selesai': 0};
       return BarChartGroupData(
         x: month,
         barRods: [
           BarChartRodData(
-            toY: counts['Belum Mulai']?.toDouble() ?? 0,
+            toY: counts['Belum Selesai']?.toDouble() ?? 0,
             color: Colors.red,
+            width: 3.sp,
           ),
           BarChartRodData(
             toY: counts['Proses']?.toDouble() ?? 0,
             color: Colors.yellow,
+            width: 3.sp,
           ),
           BarChartRodData(
             toY: counts['Selesai']?.toDouble() ?? 0,
             color: Colors.green,
+            width: 3.sp,
           ),
         ],
       );
     }).toList();
+  }
+
+  Widget _buildBarChartLegend() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildLegendItem(Colors.green, 'Selesai'),
+          16.horizontalSpace,
+          _buildLegendItem(Colors.yellow, 'Proses'),
+          16.horizontalSpace,
+          _buildLegendItem(Colors.red, 'Belum Selesai'),
+        ],
+      ),
+    );
   }
 }

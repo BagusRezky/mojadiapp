@@ -67,6 +67,8 @@ class _ArticleCardHomeState extends State<ArticleCardHome> {
             fontSize: 14.sp,
             color: Colors.black,
           ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
         5.verticalSpace,
         Row(
