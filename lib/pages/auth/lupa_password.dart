@@ -39,7 +39,7 @@ class _LupaPasswordState extends State<LupaPassword> {
       backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
         elevation: 0,
-        centerTitle: false,
+        centerTitle: true,
         automaticallyImplyLeading: false,
         backgroundColor: const Color(0x00ffffff),
         shape: const RoundedRectangleBorder(

@@ -44,6 +44,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: Center(
           child: Text(
@@ -57,8 +59,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
+      backgroundColor: Colors.white,
       body: userProfile == null
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(30.0),
@@ -148,20 +151,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: selectedIndex,
-        selectedItemColor: Colors.blue,
-        onTap: onItemTapped,
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              blurRadius: 8.0,
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+          currentIndex: selectedIndex,
+          selectedItemColor: const Color(0xFF103374),
+          unselectedItemColor: Colors.grey[700],
+          onTap: onItemTapped,
+        ),
       ),
     );
   }

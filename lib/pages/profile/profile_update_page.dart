@@ -75,6 +75,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         elevation: 0,
         centerTitle: true,
       ),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(30.0),
