@@ -42,6 +42,20 @@ class FirebaseArticleService {
             snapshot.docs.map((doc) => Article.fromFirestore(doc)).toList());
   }
 
+  Future<List<Article>> fetchFilteredArticles({String? searchQuery}) async {
+    Query query =
+        _db.collection('articles').orderBy('timestamp', descending: true);
+
+    if (searchQuery != null && searchQuery.isNotEmpty) {
+      query = query
+          .where('title', isGreaterThanOrEqualTo: searchQuery)
+          .where('title', isLessThanOrEqualTo: '$searchQuery\uf8ff');
+    }
+
+    QuerySnapshot snapshot = await query.get();
+    return snapshot.docs.map((doc) => Article.fromFirestore(doc)).toList();
+  }
+
   Future<void> updateArticle(Article article) async {
     await _db.collection('articles').doc(article.id).update(article.toMap());
   }

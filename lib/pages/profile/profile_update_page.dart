@@ -75,6 +75,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         elevation: 0,
         centerTitle: true,
       ),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(30.0),
@@ -162,18 +163,27 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     const SizedBox(height: 30),
                     SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _saveProfile,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          side: BorderSide.none,
-                          shape: const StadiumBorder(),
+                      child: GestureDetector(
+                        onTap: _saveProfile,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF103374),
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Text(
+                            "Simpan",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
-                        child: const Text("Confirm",
-                            style: TextStyle(color: Colors.white)),
                       ),
                     ),
-                    const SizedBox(height: 15),
+                    12.verticalSpace,
                     SizedBox(
                       width: double.infinity,
                       child: GestureDetector(
@@ -181,15 +191,19 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           Navigator.pop(context);
                         },
                         child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 12),
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
                           decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(100),
+                            color: const Color(0xFFFF3B30),
+                            borderRadius: BorderRadius.circular(50),
                           ),
-                          child: const Text(
-                            "Cancel",
+                          child: Text(
+                            "Batal",
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),

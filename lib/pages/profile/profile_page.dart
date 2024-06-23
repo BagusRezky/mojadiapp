@@ -44,6 +44,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: Center(
           child: Text(
@@ -57,8 +59,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
+      backgroundColor: Colors.white,
       body: userProfile == null
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(30.0),
@@ -101,42 +104,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           const SizedBox(height: 25),
                           SizedBox(
-                            width: 200,
-                            child: ElevatedButton(
-                              onPressed: () {
+                            width: double.infinity,
+                            child: GestureDetector(
+                              onTap: () {
                                 Navigator.pushNamed(
                                   context,
                                   '/updateProfile',
                                 );
                               },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
-                                side: BorderSide.none,
-                                shape: const StadiumBorder(),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 10.h),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF103374),
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: Text(
+                                  "Edit Profile",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
                               ),
-                              child: const Text("Edit Profile",
-                                  style: TextStyle(color: Colors.white)),
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          8.verticalSpace,
                           const Divider(),
-                          const SizedBox(height: 12),
+                          8.verticalSpace,
                           SizedBox(
-                            width: 200,
+                            width: double.infinity,
                             child: GestureDetector(
                               onTap: () {
                                 authProvider.signOut(context);
                               },
                               child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 12),
+                                padding: EdgeInsets.symmetric(vertical: 10.h),
                                 decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(100),
+                                  color: const Color(0xFFFF3B30),
+                                  borderRadius: BorderRadius.circular(50),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   "Keluar",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.sp,
+                                  ),
                                 ),
                               ),
                             ),
@@ -148,20 +164,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: selectedIndex,
-        selectedItemColor: Colors.blue,
-        onTap: onItemTapped,
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              blurRadius: 8.0,
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+          currentIndex: selectedIndex,
+          selectedItemColor: const Color(0xFF103374),
+          unselectedItemColor: Colors.grey[700],
+          onTap: onItemTapped,
+        ),
       ),
     );
   }
