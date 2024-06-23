@@ -114,7 +114,7 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: 160.w,
+                            width: 150.w,
                             child: Row(
                               children: [
                                 const Icon(Icons.calendar_today),
@@ -140,6 +140,8 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12.sp,
                                 ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           ),
@@ -150,7 +152,7 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: 160.w,
+                            width: 150.w,
                             child: Row(
                               children: [
                                 const Icon(Icons.location_on),
