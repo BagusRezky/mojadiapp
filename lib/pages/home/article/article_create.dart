@@ -175,8 +175,8 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
                     ),
                     12.verticalSpace,
                     TextInputField(
-                      hintText: 'Masukkan Judul Laporan',
-                      labelText: 'Judul Laporan',
+                      hintText: 'Masukkan Judul Artikel',
+                      labelText: 'Judul Artikel',
                       controller: _titleController,
                       minLines: 1,
                       maxLines: 1,
@@ -184,8 +184,8 @@ class _CreateArticleScreenState extends State<CreateArticleScreen> {
                     ),
                     12.verticalSpace,
                     TextInputField(
-                      hintText: 'Masukkan Deskripsi Laporan',
-                      labelText: 'Deskripsi Laporan',
+                      hintText: 'Masukkan Deskripsi Artikel',
+                      labelText: 'Deskripsi Artikel',
                       controller: _deskripsiController,
                       minLines: 3,
                       maxLines: 5,

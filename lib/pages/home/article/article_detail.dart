@@ -16,6 +16,7 @@ class DetailArticleScreen extends StatelessWidget {
   void _deleteArticle(BuildContext context) async {
     await FirebaseArticleService().deleteArticle(article.id);
     Navigator.pop(context);
+    Navigator.pop(context);
     QuickAlert.show(
       context: context,
       type: QuickAlertType.success,
